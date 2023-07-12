@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import { ClipForm } from './ClipForm'
+import { EvidenceForm } from './EvidenceForm'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 
 type Props = {
@@ -11,17 +11,18 @@ export default async function ParticipantId({ params }: Props) {
   const { data: participants, error } = await supabase
     .from('participants')
     .select()
+    .eq('id', Number(params.id))
   if (error)
     return (
       <div>Error no se pudo obtener el nombre del participante {params.id}</div>
     )
-
+  console.log('participantes ', participants)
   return (
     <section
-      aria-label="form clips"
+      aria-label="form evidence"
       className="min-h-screen grid place-items-center f"
     >
-      <ClipForm
+      <EvidenceForm
         id={Number(params.id)}
         serverParticipants={participants ?? []}
       />

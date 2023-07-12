@@ -1,24 +1,17 @@
 'use client'
-import {
-  Alert,
-  AlertTitle,
-  IconButton,
-  Skeleton,
-  TextField,
-} from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
+import { Skeleton, TextField } from '@mui/material'
 import { Submit } from './Submit'
 import { useEffect, useRef, useState } from 'react'
 
 import { useToaster } from '@/hooks/useToaster'
-import { CLIPS } from '@/const'
-import { addClipAction } from '@/app/actions/addClipAction'
+import { EVIDENCE } from '@/const'
+import { addEvidenceAction } from '@/app/actions/addEvidenceAction'
 import { Toaster } from '@/components/Toaster'
 type Prop = {
   id: number
   serverParticipants: Participants[]
 }
-export function ClipForm({ id, serverParticipants }: Prop) {
+export function EvidenceForm({ id, serverParticipants }: Prop) {
   const [toaster, openToaster, resetToaster] = useToaster()
   const [participantName, setParticipantName] = useState<string | null>(null)
   const urlRef = useRef<HTMLInputElement>(null)
@@ -32,11 +25,10 @@ export function ClipForm({ id, serverParticipants }: Prop) {
 
   const submitAction = async (formData: FormData) => {
     if (urlRef.current) urlRef.current.value = ''
-    const { data, status } = await addClipAction(formData)
-    const toasterParams = { feature: CLIPS, status }
+    const { data, status } = await addEvidenceAction(formData)
+    const toasterParams = { feature: EVIDENCE, status }
     openToaster(toasterParams)
   }
-  console.log({ participantName })
 
   return (
     <div className="flex w-screen flex-wrap justify-center p-4 gap-4">
@@ -56,7 +48,7 @@ export function ClipForm({ id, serverParticipants }: Prop) {
           fullWidth
           id="url"
           name="url"
-          label="Clip"
+          label="Evidencia"
           variant="outlined"
           autoFocus
           required
@@ -64,12 +56,12 @@ export function ClipForm({ id, serverParticipants }: Prop) {
         <TextField
           id="participant_id"
           name="participant_id"
-          label="Clip"
+          label="Evidencia"
           defaultValue={id}
           hidden
           variant="outlined"
         />
-        <Submit description="Enviar Clip" />
+        <Submit description="Enviar Evidencia" />
       </form>
 
       {toaster.isOpen && (

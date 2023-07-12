@@ -8,17 +8,17 @@ interface MessageStatus {
 }
 export const STATUS_SUCCESS = '201'
 export const STATUS_ERROR = '404'
-export const CLIPS = 'clips'
+export const EVIDENCE = 'evidence'
 export const PARTICIPANTS = 'participants'
 export const DATABASE_STATUS = {
-  [CLIPS]: {
+  [EVIDENCE]: {
     [STATUS_SUCCESS]: {
-      message: 'Clip agregado correctamente, puedes revisarlo en ',
+      message: 'Evidencia agregada correctamente, puedes revisarlo en ',
       connectionStatus: 'success',
     },
     [STATUS_ERROR]: {
       message:
-        'Ocurrio un error al intentar agregar el clip en la base de datos',
+        'Ocurrio un error al intentar agregar la evidencia en la base de datos',
       connectionStatus: 'error',
     },
   },
