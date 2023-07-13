@@ -21,7 +21,6 @@ export default async function DashboardLayout({ children }: Props) {
           {<ParticipantMenu serverParticipants={participants} />}
         </div>
         <div className="w-8/12 border-2 border-gray-900 rounded-lg">
-          <h2>2/2</h2>
           {children}
         </div>
       </section>
