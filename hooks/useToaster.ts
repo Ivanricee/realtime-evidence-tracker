@@ -3,12 +3,13 @@ import type { Toaster } from '@/types'
 import { useState } from 'react'
 type Props = {
   feature: string
+  action: symbol
   status: number
 }
 
 type UseToasterReturn = [
   Toaster,
-  ({ feature, status }: Props) => void,
+  ({ feature, action, status }: Props) => void,
   () => void,
 ]
 export function useToaster(): UseToasterReturn {
@@ -18,8 +19,10 @@ export function useToaster(): UseToasterReturn {
     isOpen: false,
   }
   const [toaster, setToaster] = useState(initialToaster)
-  const openToaster = ({ feature, status }: Props) => {
-    const { message, connectionStatus } = DATABASE_STATUS[feature][status]
+
+  const openToaster = ({ feature, action, status }: Props) => {
+    const { message, connectionStatus } =
+      DATABASE_STATUS[feature][action][status]
     setToaster({
       message,
       connectionStatus,
