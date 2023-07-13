@@ -1,5 +1,5 @@
 import type { Toaster } from '@/types'
-import { Alert, AlertTitle, IconButton } from '@mui/material'
+import { Alert, AlertColor, AlertTitle, IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import Link from 'next/link'
 
@@ -18,10 +18,15 @@ export function Toaster({
   linkTitle = '',
   linkSrc = '',
 }: Props) {
+  const statusTitle: { [key: string]: string } = {
+    success: 'Exito',
+    error: 'Error',
+    info: 'Info',
+  }
   return (
     <Alert
       variant="outlined"
-      severity={toaster.connectionStatus === 'success' ? 'success' : 'error'}
+      severity={toaster.connectionStatus as AlertColor}
       className={`${width} snap-center`}
       action={
         <IconButton
@@ -37,9 +42,7 @@ export function Toaster({
       }
       sx={{ mb: 2 }}
     >
-      <AlertTitle>
-        {toaster.connectionStatus === 'success' ? 'Exito' : 'Error'}
-      </AlertTitle>
+      <AlertTitle>{statusTitle[toaster.connectionStatus]}</AlertTitle>
       {toaster.message}{' '}
       <strong>
         {linkSrc.length !== 0 && <Link href={linkSrc}>{linkTitle}</Link>}
