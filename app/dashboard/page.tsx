@@ -1,19 +1,10 @@
-'use client'
-
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
-
-type Props = {
-  serverParticipants: Participants[]
-}
-
-export default function Dashboard({ serverParticipants }: Props) {
+export default function Dashboard() {
   return (
-    <>
-      <ul className="my-aut">
-        <h1>asdfasdf</h1>
-      </ul>
-    </>
+    <section
+      aria-label="dashboard evidence"
+      className="w-full h-full grid place-items-center"
+    >
+      <h1>Selecciona un participante de la izquierda</h1>
+    </section>
   )
 }
