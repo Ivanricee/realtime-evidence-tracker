@@ -9,7 +9,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle'
 import AddIcon from '@mui/icons-material/Add'
 import { useRef, useState } from 'react'
 import { useToaster } from '@/hooks/useToaster'
-import { PARTICIPANTS } from '@/const'
+import { INSERT, PARTICIPANTS } from '@/const'
 import { addParticipantAction } from '../actions/addParticipantAction'
 import { Toaster } from '@/components/Toaster'
 import { Submit } from '../participants/[id]/Submit'
@@ -30,7 +30,7 @@ export default function AddParticipant() {
     if (formRef.current) formRef.current.reset()
     if (toaster.isOpen) resetToaster()
     const { data, status } = await addParticipantAction(formData)
-    openToaster({ feature: PARTICIPANTS, status })
+    openToaster({ feature: PARTICIPANTS, action: INSERT, status })
   }
 
   return (
