@@ -8,24 +8,23 @@ type Props = {
 
 export default async function ParticipantId({ params }: Props) {
   const supabase = createServerComponentClient({ cookies })
-  const { data: participants, error } = await supabase
+  const { data, error } = await supabase
     .from('participants')
     .select()
     .eq('id', Number(params.id))
+  const participants = data as Participants[] | []
+
   if (error)
     return (
       <div>Error no se pudo obtener el nombre del participante {params.id}</div>
     )
-  console.log('participantes ', participants)
+  participants
   return (
     <section
       aria-label="form evidence"
       className="min-h-screen grid place-items-center f"
     >
-      <EvidenceForm
-        id={Number(params.id)}
-        serverParticipants={participants ?? []}
-      />
+      <EvidenceForm serverParticipants={participants} />
     </section>
   )
 }
