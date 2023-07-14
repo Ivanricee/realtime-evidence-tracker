@@ -6,6 +6,7 @@ import {
   List,
   ListItemButton,
   ListItemText,
+  Paper,
 } from '@mui/material'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import { useState } from 'react'
@@ -22,7 +23,14 @@ export default function ParticipantMenu({ serverParticipants }: Props) {
   const participants = useRealtimeParticipants({ serverParticipants })
 
   return (
-    <>
+    <Paper
+      elevation={24}
+      className="w-3/12 h-full rounded-xl overflow-y-auto
+      bg-transparent bg-gradient-to-t from-zinc-800/20 from-15% ... to-50%"
+    >
+      <h1 className="text-purple-300/60 text-center py-8 pb-4 text-3xl">
+        Participantes
+      </h1>
       <AddParticipant />
       <Divider />
       <List component="nav" aria-label="participant menu">
@@ -48,6 +56,6 @@ export default function ParticipantMenu({ serverParticipants }: Props) {
             </Link>
           ))}
       </List>
-    </>
+    </Paper>
   )
 }
