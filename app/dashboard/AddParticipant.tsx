@@ -39,7 +39,7 @@ export default function AddParticipant() {
         <Fab
           color="inherit"
           aria-label="add participant"
-          className="border-solid border-2 border-slate-500 text-slate-400 hover:bg-slate-900"
+          className="border-solid border-2 border-purple-300/40 text-purple-300/90 hover:bg-slate-900"
           onClick={openModal}
         >
           <AddIcon />
