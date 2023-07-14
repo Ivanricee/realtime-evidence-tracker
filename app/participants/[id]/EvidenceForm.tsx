@@ -70,7 +70,7 @@ export function EvidenceForm({ serverParticipants }: Props) {
           name="participant_id"
           label="participant id"
           defaultValue={participant.id}
-          hidden
+          className="absolute invisible"
           variant="outlined"
         />
         <Submit description="Enviar Evidencia" />
