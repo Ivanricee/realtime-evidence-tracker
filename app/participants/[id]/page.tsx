@@ -22,7 +22,7 @@ export default async function ParticipantId({ params }: Props) {
   return (
     <section
       aria-label="form evidence"
-      className="min-h-screen grid place-items-center f"
+      className="min-h-screen grid place-items-center "
     >
       <EvidenceForm serverParticipants={participants} />
     </section>
