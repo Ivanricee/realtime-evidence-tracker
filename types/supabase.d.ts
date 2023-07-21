@@ -38,7 +38,34 @@ export interface Database {
             referencedRelation: 'participants'
             referencedColumns: ['id']
           },
+          {
+            foreignKeyName: 'evidence_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participantevidenceview'
+            referencedColumns: ['id']
+          },
         ]
+      }
+      financialSanctions: {
+        Row: {
+          amount: number | null
+          created_at: string | null
+          id: number
+          type: string | null
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string | null
+          id?: number
+          type?: string | null
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string | null
+          id?: number
+          type?: string | null
+        }
+        Relationships: []
       }
       participants: {
         Row: {
@@ -90,11 +117,74 @@ export interface Database {
             referencedRelation: 'participants'
             referencedColumns: ['id']
           },
+          {
+            foreignKeyName: 'questions_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participantevidenceview'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      sancion: {
+        Row: {
+          created_at: string | null
+          evidence_id: number | null
+          id: number
+          participant_id: number | null
+          question_id: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          evidence_id?: number | null
+          id?: number
+          participant_id?: number | null
+          question_id?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          evidence_id?: number | null
+          id?: number
+          participant_id?: number | null
+          question_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'sancion_evidence_id_fkey'
+            columns: ['evidence_id']
+            referencedRelation: 'evidence'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'sancion_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participants'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'sancion_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participantevidenceview'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'sancion_question_id_fkey'
+            columns: ['question_id']
+            referencedRelation: 'questions'
+            referencedColumns: ['id']
+          },
         ]
       }
     }
     Views: {
-      [_ in never]: never
+      participantevidenceview: {
+        Row: {
+          id: number | null
+          imgProfile: string | null
+          name: string | null
+          pendingevidence: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
