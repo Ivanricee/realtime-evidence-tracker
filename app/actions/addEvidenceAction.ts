@@ -10,7 +10,7 @@ export const addEvidenceAction = async (formData: FormData) => {
   try {
     const { data, status } = await supabase
       .from('evidence')
-      .insert([{ participant_id: participantId, url, status: 'pending' }])
+      .insert([{ participant_id: participantId, url }])
     //revalidatePath(`/dashboard`);
     //console.log({ data, error });
     return { data, status }
