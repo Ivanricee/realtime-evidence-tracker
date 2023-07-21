@@ -48,6 +48,11 @@ export const DATABASE_STATUS = {
           'No se encontraron participantes en la búsqueda realizada. revisa',
         connectionStatus: 'info',
       },
+      [STATUS_ERROR]: {
+        message:
+          'Ocurrio un error al intentar obtener los participantes, intenta mas tarde',
+        connectionStatus: 'error',
+      },
     },
   },
 } as MessageStatus
