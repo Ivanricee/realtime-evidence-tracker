@@ -12,7 +12,7 @@ export const addParticipantAction = async (formData: FormData) => {
     const { data, status } = await supabase
       .from('participants')
       .insert([{ name, imgProfile }])
-    revalidatePath('/dashboard')
+    //revalidatePath('/dashboard/[participant]')
     //console.log({ data, error });
     return { data, status }
   } catch (error) {
