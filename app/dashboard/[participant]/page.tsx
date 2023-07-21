@@ -1,56 +1,38 @@
 'use client'
-import { Box } from '@mui/material'
+import ParticipantStats from '@/components/ParticipantStats/Index'
+import { Box, Button } from '@mui/material'
 import Paper from '@mui/material/Paper'
 type Prop = {
   params: { participant: string }
 }
 export default function dashboardParticipant({ params }: Prop) {
   return (
-    <section aria-label="dashboard evidence" className="w-full h-full">
+    <section aria-label="dashboard evidence" className="w-full h-full flex">
       <section
         aria-label="user data edition and media"
-        className="h-2/3 grid grid-cols-6 grid-rows-7 gap-4"
+        className="h-full w-full flex flex-col justify-center "
       >
         <Paper
-          className="col-span-2 row-span-6 rounded-xl
-          bg-transparent bg-gradient-to-t from-zinc-800/30 from-20% ... to-35%"
           elevation={12}
+          className="rounded-xl flex flex-col h-4/6 gap-4 p-4
+          bg-transparent bg-gradient-to-t from-zinc-800/30 from-20% ... to-65%"
         >
-          <h1>{params.participant}</h1>
-          <p>Participant info</p>
-          <small> get stats realtime participant</small>
-          <p>components</p>
-          <ol>
-            <li>participant badge</li>
-            <li>
-              participant castigo stats
-              <ol>
-                <li>sin cumplir [3]</li>
-                <li>total [17]</li>
-              </ol>
-            </li>
-          </ol>
+          <div className="h-5/6 bg-black/60 bg-opacity-80 rounded-lg w-full flex justify-center items-center">
+            <h3 className="text-indigo-300">
+              Ve evidencias con ayuda de la lista de abajo
+            </h3>
+          </div>
+          <div className="flex rounded-xl h-1/6 w-full justify-evenly items-center">
+            <Button variant="outlined" disabled>
+              Aceptar
+            </Button>
+            <Button variant="outlined">Descartar</Button>
+          </div>
         </Paper>
 
         <Paper
           elevation={12}
-          className="col-span-4 row-span-5  rounded-xl
-          bg-transparent bg-gradient-to-t from-zinc-800/30 from-20% ... to-65%"
-        >
-          Video media
-        </Paper>
-        <Paper
-          elevation={12}
-          className="col-span-4  rounded-xl
-          bg-transparent bg-gradient-to-t from-zinc-800/30 from-20% ... to-60%"
-        >
-          buttons maybe?
-        </Paper>
-      </section>
-      <section aria-label="evidence list" className=" h-1/3 pt-4">
-        <Paper
-          elevation={12}
-          className="h-full rounded-xl
+          className="rounded-xl h-2/6
           bg-transparent bg-gradient-to-t from-zinc-800/30 from-30% ... to-70%%
           "
         >
