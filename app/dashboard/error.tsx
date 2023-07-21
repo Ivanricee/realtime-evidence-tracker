@@ -1,5 +1,6 @@
 'use client' // Error components must be Client Components
 
+import { Button } from '@mui/material'
 import { useEffect } from 'react'
 
 export default function Error({
@@ -15,16 +16,18 @@ export default function Error({
   }, [error])
 
   return (
-    <div>
-      <h2>Algo salio maal</h2>
-      <button
+    <div className="h-screen flex flex-col justify-center items-center gap-4">
+      <h2 className="">Algo salio mal</h2>
+
+      <Button
+        variant="outlined"
         onClick={
           // Attempt to recover by trying to re-render the segment
           () => reset()
         }
       >
         Intenta de nuevo
-      </button>
+      </Button>
     </div>
   )
 }
