@@ -1,16 +1,35 @@
+import { getParticipantEvidences } from '@/app/actions/getParticipantEvidences'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { useEffect, useState } from 'react'
-type Props = {
-  serverParticipants: Participants[]
-}
-export function useRealtimeParticipants({ serverParticipants }: Props) {
-  const [participants, setParticipants] =
-    useState<Participants[]>(serverParticipants)
-  const supabase = createClientComponentClient<Database>()
 
+import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+
+type Props = {
+  //serverParticipants: Participants[]
+}
+export function useRealtimeParticipants() {
+  const [particEvidence, setparticEvidence] = useState<
+    participantEvidenceView[] | SupabaseError | []
+  >([])
+
+  const { participant: participantId } = useParams()
+  // get participants and evidence data
+  useEffect(() => {
+    const participantEvidence = async () => {
+      const particEvidenceRes = await getParticipantEvidences({
+        participantId,
+      })
+      if (particEvidenceRes) setparticEvidence(particEvidenceRes)
+    }
+    participantEvidence()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const supabase = createClientComponentClient<Database>()
+  //subscript to participants and events then update local state
   useEffect(() => {
     const channel = supabase
-      .channel('onlyShot participants')
+      .channel('participants & evidence')
       .on(
         'postgres_changes',
         {
@@ -19,28 +38,37 @@ export function useRealtimeParticipants({ serverParticipants }: Props) {
           table: 'participants',
         },
         (payload) => {
-          setParticipants((prevParticipant) => {
-            const payloadParticipant = payload.new as Participants
-            const foundParticipant = prevParticipant.findIndex(
-              (participant) => participant.id === payloadParticipant.id
-            )
-            if (foundParticipant !== -1) {
-              const updateParticipant = {
-                ...prevParticipant[foundParticipant],
-                ...payloadParticipant,
-              }
-              const newParticipants = [...prevParticipant]
-              newParticipants[foundParticipant] = updateParticipant
-              return newParticipants
-            }
-            return [...prevParticipant, payloadParticipant]
-          })
+          const participantEvidence = async () => {
+            const particEvidenceRes = await getParticipantEvidences({
+              participantId,
+            })
+            if (particEvidenceRes) setparticEvidence(particEvidenceRes)
+          }
+          participantEvidence()
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'evidence',
+        },
+        (payload) => {
+          const participantEvidence = async () => {
+            const particEvidenceRes = await getParticipantEvidences({
+              participantId,
+            })
+            if (particEvidenceRes) setparticEvidence(particEvidenceRes)
+          }
+          participantEvidence()
         }
       )
       .subscribe()
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [supabase, setParticipants])
-  return participants
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [supabase])
+  return particEvidence
 }
