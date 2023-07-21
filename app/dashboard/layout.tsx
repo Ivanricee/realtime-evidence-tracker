@@ -1,6 +1,8 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import ParticipantMenu from './ParticipantMenu'
 import { cookies } from 'next/headers'
+import ParticipantStats from '@/components/ParticipantStats/Index'
+
 type Props = {
   children: React.ReactNode
 }
@@ -10,9 +12,9 @@ export default async function DashboardLayout({ children }: Props) {
     .from('participants')
     .select()
   if (error) return <div>No se pudo obtener los participantes</div>
-
+  console.log('real participants? ', participants)
   return (
-    <section className="h-full relative ">
+    <section className="h-full relative">
       <div
         className="absolute aspect-video h-60 bg-green-500 blur-3xl bg-opacity-10
       rounded-full translate-y-40 left-[10%] top-[10%]"
@@ -30,8 +32,14 @@ export default async function DashboardLayout({ children }: Props) {
         rounded-full top-[30%] left-[50%]"
       ></div>
       <section className="flex gap-4 h-full relative z-10">
-        {<ParticipantMenu serverParticipants={participants} />}
-        <div className="w-9/12 rounded-lg">{children}</div>d
+        <section
+          aria-label="evidence list"
+          className="h-full w-4/12 flex items-center flex-col xl:flex-row-reverse xl:w-5/12"
+        >
+          <ParticipantStats serverParticipants={participants} />
+          <ParticipantMenu />
+        </section>
+        <div className="w-8/12 xl:w-7/12 rounded-lg">{children}</div>
       </section>
     </section>
   )
