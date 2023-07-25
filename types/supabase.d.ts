@@ -14,21 +14,21 @@ export interface Database {
           created_at: string | null
           id: number
           participant_id: number | null
-          status: string | null
+          status: string
           url: string | null
         }
         Insert: {
           created_at?: string | null
           id?: number
           participant_id?: number | null
-          status?: string | null
+          status?: string
           url?: string | null
         }
         Update: {
           created_at?: string | null
           id?: number
           participant_id?: number | null
-          status?: string | null
+          status?: string
           url?: string | null
         }
         Relationships: [
@@ -42,6 +42,12 @@ export interface Database {
             foreignKeyName: 'evidence_participant_id_fkey'
             columns: ['participant_id']
             referencedRelation: 'participantevidenceview'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'evidence_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participantsancionview'
             referencedColumns: ['id']
           },
         ]
@@ -123,6 +129,12 @@ export interface Database {
             referencedRelation: 'participantevidenceview'
             referencedColumns: ['id']
           },
+          {
+            foreignKeyName: 'questions_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participantsancionview'
+            referencedColumns: ['id']
+          },
         ]
       }
       sancion: {
@@ -167,6 +179,12 @@ export interface Database {
             referencedColumns: ['id']
           },
           {
+            foreignKeyName: 'sancion_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participantsancionview'
+            referencedColumns: ['id']
+          },
+          {
             foreignKeyName: 'sancion_question_id_fkey'
             columns: ['question_id']
             referencedRelation: 'questions'
@@ -182,6 +200,15 @@ export interface Database {
           imgProfile: string | null
           name: string | null
           pendingevidence: number | null
+        }
+        Relationships: []
+      }
+      participantsancionview: {
+        Row: {
+          id: number | null
+          imgProfile: string | null
+          name: string | null
+          sanciontotal: number | null
         }
         Relationships: []
       }
