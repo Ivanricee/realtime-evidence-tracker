@@ -28,7 +28,6 @@ export const getEvidence = async ({ participantId }: Props) => {
         }
         //return {[participantId]: evidenceGby[participantId] + 1}
       })
-      console.log({ evidenceGby })
     }
     if (error) throw new Error('error al obtener evidence')
 
