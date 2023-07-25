@@ -1,18 +1,9 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import ParticipantMenu from './ParticipantMenu'
-import { cookies } from 'next/headers'
-import ParticipantStats from '@/components/ParticipantStats/Index'
 
 type Props = {
   children: React.ReactNode
 }
 export default async function DashboardLayout({ children }: Props) {
-  const supabase = createServerComponentClient({ cookies })
-  const { data: participants, error } = await supabase
-    .from('participants')
-    .select()
-  if (error) return <div>No se pudo obtener los participantes</div>
-  console.log('real participants? ', participants)
   return (
     <section className="h-full relative">
       <div
@@ -36,8 +27,7 @@ export default async function DashboardLayout({ children }: Props) {
           aria-label="evidence list"
           className="h-full w-4/12 flex items-center flex-col xl:flex-row-reverse xl:w-5/12"
         >
-          <ParticipantStats serverParticipants={participants} />
-          <ParticipantMenu />
+          <ParticipantMenu expand />
         </section>
         <div className="w-8/12 xl:w-7/12 rounded-lg">{children}</div>
       </section>
