@@ -8,4 +8,6 @@ declare global {
   type Questions = Database['public']['Tables']['questions']['Row']
   type participantEvidenceView =
     Database['public']['Views']['participantevidenceview']['Row']
+  type participantsancionview =
+    Database['public']['Views']['participantsancionview']['Row']
 }
