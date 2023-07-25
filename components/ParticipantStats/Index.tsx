@@ -1,62 +1,124 @@
 'use client'
-
+import { useEffect } from 'react'
 import Paper from '@mui/material/Paper'
 import { useParams } from 'next/navigation'
 import ParticipantBadge from './ParticipantBadge'
-import { Divider } from '@mui/material'
-type Props = {
-  serverParticipants: Participants[]
+import { Divider, Grow, Skeleton } from '@mui/material'
+import { useRealtimeParticipantSancion } from '@/hooks/useRealtimeParticipantSancion'
+import { useToaster } from '@/hooks/useToaster'
+import { NO_DATA, PARTICIPANTS, SELECT } from '@/const'
+import { Toaster } from '../Toaster'
+
+type Card = {
+  children: React.ReactNode
 }
-export default function ParticipantStats({ serverParticipants }: Props) {
+function Card({ children }: Card) {
+  return (
+    <Paper
+      className=" rounded-xl p-4
+          bg-transparent bg-gradient-to-t from-zinc-800/30 from-20% ... to-35%"
+      elevation={12}
+    >
+      {children}
+    </Paper>
+  )
+}
+function SkeletonList() {
+  return (
+    <div className=" flex gap-4 flex-col w-full">
+      <div className="flex gap-4 items-center">
+        <Skeleton
+          variant="circular"
+          className="w-full bg-purple-300/5"
+          width={70}
+          height={70}
+        />
+        <Skeleton
+          variant="rounded"
+          className="w-20 bg-purple-300/5"
+          height={30}
+        />
+      </div>
+      <Divider />
+    </div>
+  )
+}
+export default function ParticipantStats() {
   const { participant: idParticipant } = useParams()
+  const [particSancion, loading, error] = useRealtimeParticipantSancion()
+  const [toaster, openToaster, resetToaster] = useToaster()
 
-  let participants = []
-  if (idParticipant) {
-    participants.push(
-      serverParticipants.find(
-        (participant) => participant.id === Number(idParticipant)
-      )
+  useEffect(() => {
+    if (!loading) {
+      let status = null
+      if (error) status = error.status
+      if (particSancion?.length === 0) status = NO_DATA
+      if (status) {
+        openToaster({
+          feature: PARTICIPANTS,
+          action: SELECT,
+          status,
+        })
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [particSancion])
+
+  if (loading)
+    return (
+      <div className="w-full rounded-xl xl:w-5/12 h-2/6">
+        <Card>
+          <SkeletonList />
+        </Card>
+      </div>
     )
-  } else {
-    participants = serverParticipants
-  }
-
+  //error/empty data
+  if (toaster.isOpen)
+    return (
+      <div className="w-full rounded-xl xl:w-5/12 h-2/6">
+        <Card>
+          <div className="flex justify-center px-6 mt-6">
+            <Toaster
+              toaster={toaster}
+              resetToaster={resetToaster}
+              width="6/6"
+            />
+          </div>
+        </Card>
+      </div>
+    )
   return (
     <>
-      {participants &&
-        participants.map((participant) => {
-          if (participant?.id === Number(idParticipant)) {
-            return (
-              <Paper
-                key={participant.id}
-                className="w-full rounded-xl p-4 xl:w-1/2 h-2/6
-          bg-transparent bg-gradient-to-t from-zinc-800/30 from-20% ... to-35%"
-                elevation={12}
-              >
-                <ParticipantBadge
-                  participant={participant}
-                  idParticipant={idParticipant}
-                />
-                <Divider />
-                <h1>{'params.participant'}</h1>
-                <p>Participant info</p>
-                <small> get stats realtime participant</small>
-                <p>components</p>
-                <ol>
-                  <li>participant badge</li>
-                  <li>
-                    participant castigo stats
-                    <ol>
-                      <li>sin cumplir [3]</li>
-                      <li>total [17]</li>
-                    </ol>
-                  </li>
-                </ol>
-              </Paper>
-            )
-          }
-          return
-        })}
+      {particSancion.map((participant) => {
+        return (
+          <div
+            className="w-full rounded-xl xl:w-5/12 h-2/6"
+            key={participant.id}
+          >
+            <Grow in={Boolean(particSancion)}>
+              <div>
+                <Card key={participant.id}>
+                  <ParticipantBadge participant={participant} />
+                  <Divider />
+
+                  <ol>
+                    <li>
+                      participant castigo stats
+                      <ol>
+                        <li>Preguntas Buenas[3] Malas</li>
+                        <li>castigos cumplidos[3] rechazados</li>
+                        <li>Bits Subs</li>
+                        <li>{'--->'} alka </li>
+                        <li>{'<---'} ded </li>
+                      </ol>
+                    </li>
+                  </ol>
+                </Card>
+              </div>
+            </Grow>
+          </div>
+        )
+      })}
     </>
   )
 }
