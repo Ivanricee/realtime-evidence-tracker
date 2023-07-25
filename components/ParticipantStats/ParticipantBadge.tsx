@@ -3,37 +3,40 @@ import { useRealtimeSancion } from '@/hooks/useRealtimeSancion'
 import { Avatar, Paper } from '@mui/material'
 
 type Props = {
-  participant: Participants
-  idParticipant: string
+  participant: participantsancionview
 }
-export default function ParticipantBadge({
-  participant,
-  idParticipant,
-}: Props) {
-  const hookParams = { serverParticipants: null, idParticipant }
-  //useRealtimeSancion(hookParams)
+const sancionDir: { [key: string]: string } = {
+  0: 'Sin sanciones',
+  1: '1 Sancion',
+}
+export default function ParticipantBadge({ participant }: Props) {
+  const { sanciontotal, name } = participant
+
   return (
-    <div className="w-full ">
-      <div className="flex gap-2 items-center">
-        <div className="">
-          <Avatar
-            alt="profile participant"
-            src={participant.imgProfile!}
-            sx={{ width: 56, height: 56 }}
-          />
-        </div>
-        <div className="">
-          <p>
-            <strong className="text-lg">+4</strong> Evidencias
-          </p>
-          <p>
-            <strong className="text-lg">+4</strong> Preguntas
-          </p>
+    <>
+      <div className="w-full  mb-4">
+        <div className="flex gap-2 items-center">
+          <div>
+            <Avatar
+              alt="profile participant"
+              src={participant.imgProfile!}
+              sx={{ width: 56, height: 56 }}
+            />
+          </div>
+          <div className="flex justify-center items-center gap-2 text-blue-300">
+            <strong className="text-4xl ">
+              {sanciontotal !== null && sanciontotal > 1 && sanciontotal}
+            </strong>
+            <p className="text-lg flex ">
+              {(sanciontotal !== null && sancionDir[sanciontotal]) ||
+                'Sanciones'}
+            </p>
+          </div>
         </div>
       </div>
       <div>
-        <h1 className="text-center">{participant.name} </h1>
+        <h1 className="text-center">{name} </h1>
       </div>
-    </div>
+    </>
   )
 }
