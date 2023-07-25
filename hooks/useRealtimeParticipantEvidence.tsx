@@ -4,28 +4,35 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-type Props = {
-  //serverParticipants: Participants[]
-}
-export function useRealtimeParticipants() {
-  const [particEvidence, setparticEvidence] = useState<
-    participantEvidenceView[] | SupabaseError | []
+type response = [participantEvidenceView[], boolean, SupabaseError | null]
+
+export function useRealtimeParticipantEvidence(): response {
+  const supabase = createClientComponentClient<Database>()
+  const { participant: participantId } = useParams()
+
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<SupabaseError | null>(null)
+  const [particEvidence, setParticEvidence] = useState<
+    participantEvidenceView[] | []
   >([])
 
-  const { participant: participantId } = useParams()
-  // get participants and evidence data
+  // get participants and evidence data/error/loading
   useEffect(() => {
     const participantEvidence = async () => {
-      const particEvidenceRes = await getParticipantEvidences({
+      const response = await getParticipantEvidences({
         participantId,
       })
-      if (particEvidenceRes) setparticEvidence(particEvidenceRes)
+      if (response[0]?.error) {
+        setError(response[0])
+      } else {
+        setParticEvidence(response)
+      }
+      setLoading(false)
     }
     participantEvidence()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const supabase = createClientComponentClient<Database>()
   //subscript to participants and events then update local state
   useEffect(() => {
     const channel = supabase
@@ -42,7 +49,7 @@ export function useRealtimeParticipants() {
             const particEvidenceRes = await getParticipantEvidences({
               participantId,
             })
-            if (particEvidenceRes) setparticEvidence(particEvidenceRes)
+            if (particEvidenceRes) setParticEvidence(particEvidenceRes)
           }
           participantEvidence()
         }
@@ -59,7 +66,7 @@ export function useRealtimeParticipants() {
             const particEvidenceRes = await getParticipantEvidences({
               participantId,
             })
-            if (particEvidenceRes) setparticEvidence(particEvidenceRes)
+            if (particEvidenceRes) setParticEvidence(particEvidenceRes)
           }
           participantEvidence()
         }
@@ -70,5 +77,5 @@ export function useRealtimeParticipants() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [supabase])
-  return particEvidence
+  return [particEvidence, loading, error]
 }
