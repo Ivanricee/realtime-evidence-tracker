@@ -13,13 +13,13 @@ export const getParticipantEvidences = async ({ participantId }: Props) => {
       .from('participantevidenceview')
       .select('*')
     if (error) {
-      return { data: null, status: 404 }
+      return [{ data: null, status: 404 }]
     }
 
     return data
   } catch (error) {
     console.log('error de conexion ', error)
 
-    return { data: null, status: 404 }
+    return [{ data: null, status: 404 }]
   }
 }
