@@ -1,13 +1,6 @@
-interface MessageStatus {
-  [key: string]: {
-    [key: symbol]: {
-      [key: number]: {
-        message: string
-        connectionStatus: string
-      }
-    }
-  }
-}
+import type { MessageStatus } from '@/types'
+
+// -- supabase
 export const STATUS_SUCCESS = '201'
 export const STATUS_ERROR = '404'
 export const EVIDENCE = 'evidence'
@@ -56,3 +49,14 @@ export const DATABASE_STATUS = {
     },
   },
 } as MessageStatus
+
+//-- menu dasboard
+
+export const M_EVIDENCIAS = 'Evidencias'
+export const M_PREGUNTAS = 'Preguntas'
+export const M_BITSSUBS = 'Bits & Subscripciones'
+export type MenuKey =
+  | typeof M_EVIDENCIAS
+  | typeof M_PREGUNTAS
+  | typeof M_BITSSUBS
+export const DASHBOARD_MENU: MenuKey[] = [M_EVIDENCIAS, M_PREGUNTAS, M_BITSSUBS]
