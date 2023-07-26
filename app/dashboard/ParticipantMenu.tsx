@@ -31,9 +31,9 @@ function Card({ expand, children }: Card) {
   return (
     <Paper
       elevation={24}
-      className={`w-full rounded-xl overflow-y-auto xl:mr-4
+      className={`w-full rounded-xl overflow-y-auto
   bg-transparent bg-gradient-to-t from-zinc-800/20 from-15% ... to-50%
-  ${expand ? 'h-full xl:w-7/12' : 'h-4/6 xl:h-full'}`}
+  ${expand ? 'h-full xl:w-7/12' : 'h-1/2 xl:h-full'}`}
     >
       {children}
     </Paper>
