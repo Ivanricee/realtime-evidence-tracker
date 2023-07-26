@@ -25,7 +25,7 @@ export default async function DashboardLayout({ children }: Props) {
       <section className="flex gap-4 h-full relative z-10">
         <section
           aria-label="evidence list"
-          className="h-full w-4/12 flex items-center flex-col xl:flex-row-reverse xl:w-5/12"
+          className="h-full w-4/12 flex gap-4 items-center flex-col xl:flex-row-reverse xl:w-5/12"
         >
           <ParticipantMenu expand />
         </section>
