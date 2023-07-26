@@ -1,25 +1,34 @@
 import { getEvidence } from '@/app/actions/getEvidence'
-import { getParticipantEvidences } from '@/app/actions/getParticipantEvidences'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export function useRealtimeEvidence() {
-  const [evidence, setEvidence] = useState<number | null>(null)
-  const supabase = createClientComponentClient<Database>()
+type response = [Evidence[], boolean, SupabaseError | null]
+export function useRealtimeEvidence(): response {
+  const [evidences, setEvidences] = useState<Evidence[] | []>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<SupabaseError | null>(null)
+  const supabase = createClientComponentClient()
   const { participant: participantId } = useParams()
 
   useEffect(() => {
-    console.log('asdf')
-    const getParticipantEvi = async () => {
-      const evidence = await getParticipantEvidences({ participantId })
-      console.log('hook resp ', evidence)
-
-      if (evidence) setEvidence(evidence)
+    const getEvidenceRes = async () => {
+      const evidence = await getEvidence({ participantId })
+      if (evidence[0]?.error) {
+        setError(evidence[0])
+      } else {
+        setEvidences(evidence)
+      }
+      setLoading(false)
+      //if (evidence) setEvidence(evidence)
     }
-    getParticipantEvi()
+    getEvidenceRes()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   useEffect(() => {
+    let filter = {}
+    if (participantId) filter = { filter: `participant_id=eq.${participantId}` }
+
     const channel = supabase
       .channel('onlyShot participants')
       .on(
@@ -28,10 +37,13 @@ export function useRealtimeEvidence() {
           event: '*',
           schema: 'public',
           table: 'evidence',
+          ...filter,
         },
         (payload) => {
-          setEvidence((prevEvidence) => {
+          setEvidences((prevEvidence) => {
+            //eventType: 'DELETE'
             const payloadEvidence = payload.new as Evidence
+
             const foundEvidence = prevEvidence.findIndex(
               (evidence) => evidence.id === payloadEvidence.id
             )
@@ -52,6 +64,6 @@ export function useRealtimeEvidence() {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [supabase, setEvidence])
-  return evidence
+  }, [supabase, setEvidences])
+  return [evidences, loading, error]
 }
