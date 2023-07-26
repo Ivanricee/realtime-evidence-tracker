@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="bg-none" id="__next">
-        <main className="w-full h-screen bg-cover p-6 overflow-hidden">
+        <main className="w-full h-screen bg-cover p-6 overflow-hidden  min-h-[600px]">
           <ThemeRegistry>{children}</ThemeRegistry>
         </main>
       </body>
