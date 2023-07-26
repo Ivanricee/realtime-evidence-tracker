@@ -15,7 +15,7 @@ type Card = {
 function Card({ children }: Card) {
   return (
     <Paper
-      className=" rounded-xl p-4
+      className=" rounded-xl p-4 h-full overflow-x-auto
           bg-transparent bg-gradient-to-t from-zinc-800/30 from-20% ... to-35%"
       elevation={12}
     >
@@ -92,10 +92,10 @@ export default function ParticipantStats() {
       {particSancion.map((participant) => {
         return (
           <div
-            className="w-full rounded-xl xl:w-5/12 h-2/6"
+            className="min-w-[240px] w-4/5 rounded-xl xl:w-5/12 min-h-[15rem] "
             key={participant.id}
           >
-            <Grow in={Boolean(particSancion)}>
+            <Grow in={Boolean(particSancion)} className="h-full">
               <div>
                 <Card key={participant.id}>
                   <ParticipantBadge participant={participant} />
