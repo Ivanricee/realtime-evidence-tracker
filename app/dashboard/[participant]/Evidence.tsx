@@ -1,12 +1,21 @@
 import { useRealtimeEvidence } from '@/hooks/useRealtimeEvidence'
-import { Button, Paper } from '@mui/material'
+import { useState } from 'react'
+import { Button, Paper, Tabs } from '@mui/material'
+import Tab from '@mui/material/Tab'
+import TabPanel, { a11yProps } from '@/components/TabPanel'
+import { ListEvidence } from './ListEvidence'
 
 export function Evidence() {
+  const [value, setValue] = useState(0)
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue)
+  }
   const [evidences, loading, error] = useRealtimeEvidence()
+
   return (
     <section
       aria-label="user data edition and media"
-      className="h-full w-full flex flex-col justify-center gap-4"
+      className="h-full w-full flex flex-col justify-center gap-4 "
     >
       <Paper
         elevation={12}
@@ -22,33 +31,46 @@ export function Evidence() {
           {
             //disabled
           }
-          <Button variant="outlined" className="w-32 h-16">
+          <Button variant="outlined" className="w-32 h-12">
             Aceptar
           </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            className="w-32 h-16 border-purple-500 text-purple-300/90"
-          >
+          <Button variant="outlined" color="secondary" className="w-32 h-12">
             Descartar
           </Button>
         </div>
       </Paper>
       <Paper
         elevation={12}
-        className="rounded-xl h-2/6
-  bg-transparent bg-gradient-to-t from-zinc-800/30 from-30% ... to-70%%
-  "
+        className="rounded-xl h-2/6 flex
+  bg-transparent bg-gradient-to-t from-zinc-800/30 from-30% ... to-70%"
       >
-        <ul>
-          {evidences.map((evidence) => {
-            return (
-              <>
-                <h1>{evidence.status}</h1>
-              </>
-            )
-          })}
-        </ul>
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          indicatorColor="secondary"
+          textColor="secondary"
+          value={value}
+          onChange={handleChange}
+          aria-label="evidence"
+          sx={{ borderRight: 2, borderColor: 'divider', textAlign: 'left' }}
+        >
+          <Tab label="pendientes" {...a11yProps(0)} />
+          <Tab label="Aceptados" {...a11yProps(1)} />
+          <Tab label="Rechazados" {...a11yProps(2)} />
+          <Tab label="Agregar" {...a11yProps(3)} />
+        </Tabs>
+        <TabPanel isVertical value={value} index={0}>
+          <ListEvidence evidences={evidences} filter="pending" />
+        </TabPanel>
+        <TabPanel isVertical value={value} index={1}>
+          <ListEvidence evidences={evidences} filter="accepted" />
+        </TabPanel>
+        <TabPanel isVertical value={value} index={2}>
+          <ListEvidence evidences={evidences} filter="rejected" />
+        </TabPanel>
+        <TabPanel isVertical value={value} index={3}>
+          Item Four
+        </TabPanel>
       </Paper>
     </section>
   )
