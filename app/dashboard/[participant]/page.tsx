@@ -20,8 +20,6 @@ type Prop = {
 export default function DashboardParticipant({ params }: Prop) {
   const [value, setValue] = useState(0)
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    console.log({ newValue })
-
     setValue(newValue)
   }
   const MENU_COMPONENTS: Record<MenuKey, React.ReactNode> = {
@@ -35,7 +33,13 @@ export default function DashboardParticipant({ params }: Prop) {
         position="static"
         className="w-full rounded-lg bg-opacity-5 bg-transparent bg-gradient-to-r from-zinc-700/40 from-10% ... to-65%"
       >
-        <Tabs value={value} onChange={handleChange} aria-label="Dashboard menu">
+        <Tabs
+          value={value}
+          indicatorColor="secondary"
+          textColor="secondary"
+          onChange={handleChange}
+          aria-label="Dashboard menu"
+        >
           {DASHBOARD_MENU.map((menu, index) => (
             <Tab key={menu} label={menu} {...a11yProps(index)} />
           ))}
