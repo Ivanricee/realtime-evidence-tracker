@@ -22,6 +22,17 @@ export const DATABASE_STATUS = {
         connectionStatus: 'error',
       },
     },
+    [SELECT]: {
+      [NO_DATA]: {
+        message: 'No se encontraron evidencias para este participante',
+        connectionStatus: 'info',
+      },
+      [STATUS_ERROR]: {
+        message:
+          'Ocurrio un error al intentar obtener evidencias, intenta mas tarde',
+        connectionStatus: 'error',
+      },
+    },
   },
   [PARTICIPANTS]: {
     [INSERT]: {
