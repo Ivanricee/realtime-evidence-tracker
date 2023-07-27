@@ -20,7 +20,6 @@ export function useRealtimeEvidence(): response {
         setEvidences(evidence)
       }
       setLoading(false)
-      //if (evidence) setEvidence(evidence)
     }
     getEvidenceRes()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,6 +63,6 @@ export function useRealtimeEvidence(): response {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [supabase, setEvidences])
+  }, [supabase, setEvidences, participantId])
   return [evidences, loading, error]
 }
