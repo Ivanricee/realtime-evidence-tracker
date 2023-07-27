@@ -4,6 +4,7 @@ interface TabPanelProps {
   dir?: string
   index: number
   value: number
+  isVertical?: boolean
 }
 export function a11yProps(index: number) {
   return {
@@ -12,16 +13,18 @@ export function a11yProps(index: number) {
   }
 }
 export default function TabPanel(props: TabPanelProps) {
-  const { children, value, index } = props
-
+  const { children, value, index, isVertical = false } = props
+  const idVH = isVertical
+    ? `vertical-tab-${index}`
+    : `full-width-tabpanel-${index}`
   return (
     <Grow in={value === index}>
       <div
         role="tabpanel"
         hidden={value !== index}
-        id={`full-width-tabpanel-${index}`}
+        id={idVH}
         aria-labelledby={`full-width-tab-${index}`}
-        className="h-full"
+        className="h-full w-full overflow-auto"
       >
         {value === index && children}
       </div>
