@@ -24,7 +24,7 @@ export const DATABASE_STATUS = {
     },
     [SELECT]: {
       [NO_DATA]: {
-        message: 'No se encontraron evidencias para este participante',
+        message: 'Sin evidencias recientes, agrega una evidencia ',
         connectionStatus: 'info',
       },
       [STATUS_ERROR]: {
