@@ -72,9 +72,9 @@ export default function ParticipantMenu({ expand = false }: Props) {
   useEffect(() => {
     if (!loading) {
       let status = null
-      if (error) status = error.status
       if (particEvidence?.length === 0) status = NO_DATA
-      if (status) {
+      if (error) status = error.status
+      if (status !== null) {
         openToaster({
           feature: PARTICIPANTS,
           action: SELECT,

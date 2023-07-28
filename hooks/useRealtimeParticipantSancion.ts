@@ -19,7 +19,7 @@ export function useRealtimeParticipantSancion(): responseHook {
     if (!loading) setLoading(true)
     const participantSancion = async () => {
       const response = await getParticipantSancion({ participantId })
-      if (response[0]?.error) {
+      if (response[0]?.data === null) {
         setError(response[0])
       } else {
         setParticSancion(response)

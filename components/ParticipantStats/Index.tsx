@@ -51,9 +51,9 @@ export default function ParticipantStats() {
   useEffect(() => {
     if (!loading) {
       let status = null
-      if (error) status = error.status
       if (particSancion?.length === 0) status = NO_DATA
-      if (status) {
+      if (error) status = error.status
+      if (status !== null) {
         openToaster({
           feature: PARTICIPANTS,
           action: SELECT,

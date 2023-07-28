@@ -14,7 +14,8 @@ export function useRealtimeEvidence(): response {
   useEffect(() => {
     const getEvidenceRes = async () => {
       const evidence = await getEvidence({ participantId })
-      if (evidence[0]?.error) {
+
+      if (evidence[0]?.data === null) {
         setError(evidence[0])
       } else {
         setEvidences(evidence)

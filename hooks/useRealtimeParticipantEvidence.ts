@@ -22,7 +22,7 @@ export function useRealtimeParticipantEvidence(): response {
       const response = await getParticipantEvidences({
         participantId,
       })
-      if (response[0]?.error) {
+      if (response[0]?.data === null) {
         setError(response[0])
       } else {
         setParticEvidence(response)
