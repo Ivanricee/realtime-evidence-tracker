@@ -4,7 +4,7 @@ import AppBar from '@mui/material/AppBar'
 import { useState } from 'react'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
-import { Evidence } from './Evidence'
+import { Evidence } from './Evidence/Evidence'
 import {
   DASHBOARD_MENU,
   M_BITSSUBS,
