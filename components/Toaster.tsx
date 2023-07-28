@@ -45,7 +45,11 @@ export function Toaster({
       <AlertTitle>{statusTitle[toaster.connectionStatus]}</AlertTitle>
       {toaster.message}{' '}
       <strong>
-        {linkSrc.length !== 0 && <Link href={linkSrc}>{linkTitle}</Link>}
+        {linkSrc.length !== 0 && (
+          <Link href={linkSrc} target="_blank" className="underline">
+            {linkTitle}
+          </Link>
+        )}
       </strong>
     </Alert>
   )
