@@ -1,13 +1,20 @@
 import { useRealtimeEvidence } from '@/hooks/useRealtimeEvidence'
 import React, { useState, useEffect } from 'react'
-import { Button, Paper, Tabs } from '@mui/material'
+import { Paper, Tabs } from '@mui/material'
 import Tab from '@mui/material/Tab'
 import TabPanel, { a11yProps } from '@/components/TabPanel'
 import { ListEvidence } from './ListEvidence'
 import EvidenceSkeleton from './EvidenceSkeleton'
-import { useToaster } from '@/hooks/useToaster'
-import { Toaster } from '@/components/Toaster'
-import { EVIDENCE, NO_DATA, SELECT } from '@/const'
+import { useAlertToast } from '@/hooks/useAlertToast'
+import { AlertToast } from '@/components/AlertToast'
+import {
+  EVIDENCE,
+  E_ACCEPTED,
+  E_PENDING,
+  E_REJECTED,
+  NO_DATA,
+  SELECT,
+} from '@/const'
 import { useParams } from 'next/navigation'
 import { PlayMedia } from './PlayMedia'
 
@@ -27,7 +34,7 @@ function Card({ children }: cardProps) {
 export function Evidence() {
   const [value, setValue] = useState(0)
   const [evidences, loading, error] = useRealtimeEvidence()
-  const [toaster, openToaster, resetToaster] = useToaster()
+  const [alertToast, openAlertToast, resetAlertToast] = useAlertToast()
   const { participant: participantId } = useParams()
   const [media, setMedia] = useState({ id: 0, url: '' })
 
@@ -40,12 +47,12 @@ export function Evidence() {
       if (evidences?.length === 0) status = NO_DATA
       if (error) status = error.status
       if (status !== null) {
-        openToaster({
+        openAlertToast({
           feature: EVIDENCE,
           action: SELECT,
           status,
         })
-      } else if (toaster.isOpen) resetToaster()
+      } else if (alertToast.isOpen) resetAlertToast()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [evidences])
@@ -54,14 +61,15 @@ export function Evidence() {
     setMedia({ id, url })
   }
 
-  if (toaster.isOpen)
+  if (alertToast.isOpen)
     return (
       <Card>
         <div className="flex justify-center px-6 mt-6">
-          <Toaster
-            toaster={toaster}
-            resetToaster={resetToaster}
+          <AlertToast
+            alertToast={alertToast}
+            resetAlertToast={resetAlertToast}
             width="6/6"
+            closeBtn={false}
             linkTitle="Aqui"
             linkSrc={`/participants/${participantId}`}
           />
@@ -78,10 +86,9 @@ export function Evidence() {
     <Card>
       <Paper
         elevation={12}
-        className="rounded-xl flex flex-col h-4/6 gap-4 p-4
-  bg-transparent bg-gradient-to-t from-zinc-800/30 from-20% ... to-65%"
+        className="rounded-xl flex flex-col h-4/6 gap-4 p-4 bg-transparent bg-gradient-to-t from-zinc-800/30 from-20% to-65%"
       >
-        <div className="h-5/6 bg-black/60 bg-opacity-80 rounded-lg w-full flex justify-center items-center overflow-hidden">
+        <div className="h-full bg-black/60 bg-opacity-80 rounded-lg w-full flex justify-center items-center overflow-hidden">
           {media.url !== '' ? (
             <PlayMedia url={media.url} />
           ) : (
@@ -90,22 +97,10 @@ export function Evidence() {
             </h3>
           )}
         </div>
-        <div className="flex gap-6 rounded-xl h-1/6 w-full justify-center items-center">
-          {
-            //disabled
-          }
-          <Button variant="outlined" className="w-32 h-12">
-            Aceptar
-          </Button>
-          <Button variant="outlined" color="secondary" className="w-32 h-12">
-            Descartar
-          </Button>
-        </div>
       </Paper>
       <Paper
         elevation={12}
-        className="rounded-xl h-2/6 flex
-  bg-transparent bg-gradient-to-t from-zinc-800/30 from-30% ... to-70%"
+        className="rounded-xl h-2/6 flex bg-transparent bg-gradient-to-t from-zinc-800/30 from-30% to-70%"
       >
         <Tabs
           orientation="vertical"
@@ -125,21 +120,21 @@ export function Evidence() {
         <TabPanel isVertical value={value} index={0}>
           <ListEvidence
             evidences={evidences}
-            status="pending"
+            status={E_PENDING}
             handleViewer={handleViewer}
           />
         </TabPanel>
         <TabPanel isVertical value={value} index={1}>
           <ListEvidence
             evidences={evidences}
-            status="accepted"
+            status={E_ACCEPTED}
             handleViewer={handleViewer}
           />
         </TabPanel>
         <TabPanel isVertical value={value} index={2}>
           <ListEvidence
             evidences={evidences}
-            status="rejected"
+            status={E_REJECTED}
             handleViewer={handleViewer}
           />
         </TabPanel>

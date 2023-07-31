@@ -8,29 +8,29 @@ import {
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import AddIcon from '@mui/icons-material/Add'
 import { useRef, useState } from 'react'
-import { useToaster } from '@/hooks/useToaster'
+import { useAlertToast } from '@/hooks/useAlertToast'
 import { INSERT, PARTICIPANTS } from '@/const'
 import { addParticipantAction } from '../actions/addParticipantAction'
-import { Toaster } from '@/components/Toaster'
+import { AlertToast } from '@/components/AlertToast'
 import { Submit } from '../participants/[id]/Submit'
 import CustomDialog from '@/components/CustomDialog'
 
 export default function AddParticipant() {
-  const [toaster, openToaster, resetToaster] = useToaster()
+  const [alertToast, openAlertToast, resetAlertToast] = useAlertToast()
   const [isOpen, setIsOpen] = useState(false)
   const formRef = useRef<null | HTMLFormElement>(null)
   const openModal = () => {
     setIsOpen(true)
   }
   const handleClose = () => {
-    if (toaster.isOpen) resetToaster()
+    if (alertToast.isOpen) resetAlertToast()
     setIsOpen(false)
   }
   const addParticipant = async (formData: FormData) => {
     if (formRef.current) formRef.current.reset()
-    if (toaster.isOpen) resetToaster()
+    if (alertToast.isOpen) resetAlertToast()
     const { data, status } = await addParticipantAction(formData)
-    openToaster({ feature: PARTICIPANTS, action: INSERT, status })
+    openAlertToast({ feature: PARTICIPANTS, action: INSERT, status })
   }
 
   return (
@@ -87,11 +87,11 @@ export default function AddParticipant() {
             <Submit description="Agregar participante" />
           </DialogActions>
 
-          {toaster.isOpen && (
+          {alertToast.isOpen && (
             <div className="flex justify-center px-6">
-              <Toaster
-                toaster={toaster}
-                resetToaster={resetToaster}
+              <AlertToast
+                alertToast={alertToast}
+                resetAlertToast={resetAlertToast}
                 width="6/6"
               />
             </div>

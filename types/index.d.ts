@@ -1,4 +1,4 @@
-export type Toaster = {
+export type AlertToast = {
   message: string
   connectionStatus: string
   isOpen: boolean

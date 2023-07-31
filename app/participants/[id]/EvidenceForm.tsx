@@ -2,23 +2,23 @@
 import { Skeleton, TextField } from '@mui/material'
 import { Submit } from './Submit'
 import { useEffect, useRef } from 'react'
-import { useToaster } from '@/hooks/useToaster'
+import { useAlertToast } from '@/hooks/useAlertToast'
 import { EVIDENCE, INSERT, NO_DATA, PARTICIPANTS, SELECT } from '@/const'
 import { addEvidenceAction } from '@/app/actions/addEvidenceAction'
-import { Toaster } from '@/components/Toaster'
+import { AlertToast } from '@/components/AlertToast'
 
 type Props = {
   serverParticipants: Participants[] | []
 }
 
 export function EvidenceForm({ serverParticipants }: Props) {
-  const [toaster, openToaster, resetToaster] = useToaster()
+  const [alertToast, openAlertToast, resetAlertToast] = useAlertToast()
 
   const urlRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (serverParticipants.length === 0) {
-      openToaster({ feature: PARTICIPANTS, action: SELECT, status: NO_DATA })
+      openAlertToast({ feature: PARTICIPANTS, action: SELECT, status: NO_DATA })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -26,15 +26,15 @@ export function EvidenceForm({ serverParticipants }: Props) {
   const submitAction = async (formData: FormData) => {
     if (urlRef.current) urlRef.current.value = ''
     const { data, status } = await addEvidenceAction(formData)
-    openToaster({ feature: EVIDENCE, action: INSERT, status })
+    openAlertToast({ feature: EVIDENCE, action: INSERT, status })
   }
 
   if (serverParticipants.length === 0) {
     return (
-      toaster.isOpen && (
-        <Toaster
-          toaster={toaster}
-          resetToaster={resetToaster}
+      alertToast.isOpen && (
+        <AlertToast
+          alertToast={alertToast}
+          resetAlertToast={resetAlertToast}
           linkSrc="/dashboard"
           linkTitle="/dashboard"
         />
@@ -76,10 +76,10 @@ export function EvidenceForm({ serverParticipants }: Props) {
         <Submit description="Enviar Evidencia" />
       </form>
 
-      {toaster.isOpen && (
-        <Toaster
-          toaster={toaster}
-          resetToaster={resetToaster}
+      {alertToast.isOpen && (
+        <AlertToast
+          alertToast={alertToast}
+          resetAlertToast={resetAlertToast}
           linkSrc="/dashboard"
           linkTitle="/dashboard"
         />

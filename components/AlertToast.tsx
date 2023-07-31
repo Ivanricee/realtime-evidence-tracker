@@ -1,20 +1,24 @@
-import type { Toaster } from '@/types'
+import type { AlertToast } from '@/types'
 import { Alert, AlertColor, AlertTitle, IconButton } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import Link from 'next/link'
 
 type Props = {
-  toaster: Toaster
-  resetToaster: () => void
+  alertToast: AlertToast
+  resetAlertToast: () => void
   width?: string
+  description?: string
+  closeBtn?: boolean
   linkSrc?: string
   linkTitle?: string
 }
 
-export function Toaster({
-  toaster,
-  resetToaster,
+export function AlertToast({
+  alertToast,
+  resetAlertToast,
   width = 'w-3/6',
+  description = '',
+  closeBtn = true,
   linkTitle = '',
   linkSrc = '',
 }: Props) {
@@ -26,24 +30,27 @@ export function Toaster({
   return (
     <Alert
       variant="outlined"
-      severity={toaster.connectionStatus as AlertColor}
+      severity={alertToast.connectionStatus as AlertColor}
       className={`${width} snap-center`}
       action={
-        <IconButton
-          aria-label="close"
-          color="inherit"
-          size="small"
-          onClick={() => {
-            resetToaster()
-          }}
-        >
-          <CloseIcon fontSize="inherit" />
-        </IconButton>
+        closeBtn && (
+          <IconButton
+            aria-label="close"
+            color="inherit"
+            size="small"
+            onClick={() => {
+              resetAlertToast()
+            }}
+          >
+            <CloseIcon fontSize="inherit" />
+          </IconButton>
+        )
       }
       sx={{ mb: 2 }}
     >
-      <AlertTitle>{statusTitle[toaster.connectionStatus]}</AlertTitle>
-      {toaster.message}{' '}
+      <AlertTitle>{statusTitle[alertToast.connectionStatus]}</AlertTitle>
+      {alertToast.message}
+      {description}{' '}
       <strong>
         {linkSrc.length !== 0 && (
           <Link href={linkSrc} target="_blank" className="underline">

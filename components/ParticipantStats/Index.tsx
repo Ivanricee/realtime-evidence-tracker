@@ -5,9 +5,9 @@ import { useParams } from 'next/navigation'
 import ParticipantBadge from './ParticipantBadge'
 import { Divider, Grow, Skeleton } from '@mui/material'
 import { useRealtimeParticipantSancion } from '@/hooks/useRealtimeParticipantSancion'
-import { useToaster } from '@/hooks/useToaster'
+import { useAlertToast } from '@/hooks/useAlertToast'
 import { NO_DATA, PARTICIPANTS, SELECT } from '@/const'
-import { Toaster } from '../Toaster'
+import { AlertToast } from '../AlertToast'
 
 type Card = {
   children: React.ReactNode
@@ -46,7 +46,7 @@ function SkeletonList() {
 export default function ParticipantStats() {
   const { participant: idParticipant } = useParams()
   const [particSancion, loading, error] = useRealtimeParticipantSancion()
-  const [toaster, openToaster, resetToaster] = useToaster()
+  const [alertToast, openAlertToast, resetAlertToast] = useAlertToast()
 
   useEffect(() => {
     if (!loading) {
@@ -54,7 +54,7 @@ export default function ParticipantStats() {
       if (particSancion?.length === 0) status = NO_DATA
       if (error) status = error.status
       if (status !== null) {
-        openToaster({
+        openAlertToast({
           feature: PARTICIPANTS,
           action: SELECT,
           status,
@@ -73,14 +73,14 @@ export default function ParticipantStats() {
       </div>
     )
   //error/empty data
-  if (toaster.isOpen)
+  if (alertToast.isOpen)
     return (
       <div className="w-full rounded-xl xl:w-5/12 h-2/6">
         <Card>
           <div className="flex justify-center px-6 mt-6">
-            <Toaster
-              toaster={toaster}
-              resetToaster={resetToaster}
+            <AlertToast
+              alertToast={alertToast}
+              resetAlertToast={resetAlertToast}
               width="6/6"
             />
           </div>

@@ -14,8 +14,8 @@ import ListItemAvatar from '@mui/material/ListItemAvatar'
 import AddParticipant from './AddParticipant'
 import Link from 'next/link'
 import { useParams, usePathname } from 'next/navigation'
-import { useToaster } from '@/hooks/useToaster'
-import { Toaster } from '@/components/Toaster'
+import { useAlertToast } from '@/hooks/useAlertToast'
+import { AlertToast } from '@/components/AlertToast'
 import { NO_DATA, PARTICIPANTS, SELECT } from '@/const'
 import { useEffect } from 'react'
 import ParticipantStats from '@/components/ParticipantStats/Index'
@@ -66,7 +66,7 @@ function SkeletonList() {
 export default function ParticipantMenu({ expand = false }: Props) {
   const pathname = usePathname()
   const { participant: participantId } = useParams()
-  const [toaster, openToaster, resetToaster] = useToaster()
+  const [alertToast, openAlertToast, resetAlertToast] = useAlertToast()
   const [particEvidence, loading, error] = useRealtimeParticipantEvidence()
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function ParticipantMenu({ expand = false }: Props) {
       if (particEvidence?.length === 0) status = NO_DATA
       if (error) status = error.status
       if (status !== null) {
-        openToaster({
+        openAlertToast({
           feature: PARTICIPANTS,
           action: SELECT,
           status,
@@ -92,11 +92,15 @@ export default function ParticipantMenu({ expand = false }: Props) {
       </Card>
     )
   //error/empty data
-  if (toaster.isOpen)
+  if (alertToast.isOpen)
     return (
       <Card expand>
         <div className="flex justify-center px-6 mt-6">
-          <Toaster toaster={toaster} resetToaster={resetToaster} width="6/6" />
+          <AlertToast
+            alertToast={alertToast}
+            resetAlertToast={resetAlertToast}
+            width="6/6"
+          />
         </div>
       </Card>
     )
