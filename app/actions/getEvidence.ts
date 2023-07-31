@@ -5,6 +5,10 @@ import { cookies } from 'next/headers'
 type Props = {
   participantId: string
 }
+type EditProps = {
+  id: number
+  status: string
+}
 export const getEvidence = async ({ participantId }: Props) => {
   const supabase = createServerComponentClient({ cookies })
 
@@ -19,6 +23,26 @@ export const getEvidence = async ({ participantId }: Props) => {
     return data
   } catch (error) {
     console.log('error de conexion ', error)
+
+    return [{ data: null, status: 404 }]
+  }
+}
+
+export const editEvidence = async ({ id, status }: EditProps) => {
+  const supabase = createServerComponentClient({ cookies })
+  try {
+    const result = await supabase
+      .from('evidence')
+      .update({ status: status })
+      .eq('id', id)
+
+    if (result.error) {
+      return [{ data: null, status: 404 }]
+    }
+    //204
+    return result.status
+  } catch (error) {
+    console.log('no pudo actualizar: ', error)
 
     return [{ data: null, status: 404 }]
   }
