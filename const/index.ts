@@ -9,6 +9,7 @@ export const SELECT = Symbol()
 export const INSERT = Symbol()
 export const UPDATE = Symbol()
 export const NO_DATA = 0
+export const EMPTY_LIST = 200
 export const DATABASE_STATUS = {
   [EVIDENCE]: {
     [INSERT]: {
@@ -25,6 +26,10 @@ export const DATABASE_STATUS = {
     [SELECT]: {
       [NO_DATA]: {
         message: 'Sin evidencias recientes, agrega una evidencia ',
+        connectionStatus: 'info',
+      },
+      [EMPTY_LIST]: {
+        message: 'Lista sin ',
         connectionStatus: 'info',
       },
       [STATUS_ERROR]: {
@@ -71,3 +76,9 @@ export type MenuKey =
   | typeof M_PREGUNTAS
   | typeof M_BITSSUBS
 export const DASHBOARD_MENU: MenuKey[] = [M_EVIDENCIAS, M_PREGUNTAS, M_BITSSUBS]
+
+//-- Evidence status
+export const E_PENDING = 'pending'
+export const E_ACCEPTED = 'accepted'
+export const E_REJECTED = 'rejected'
+export const E_FULFILLED = 'fulfilled'
