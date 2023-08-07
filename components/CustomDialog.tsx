@@ -5,8 +5,8 @@ import CloseIcon from '@mui/icons-material/Close'
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {},
   '& .MuiDialogActions-root': {},
-  '& .css-1qxadfk-MuiPaper-root-MuiDialog-paper': {
-    backgroundImage: 'linear-gradient(70deg, #1a1a1a, #252425)',
+  '& .css-1q3oklk-MuiPaper-root-MuiDialog-paper': {
+    backgroundImage: 'linear-gradient(70deg, #242224, #363436)',
     borderRadius: '1rem',
     padding: '0.5rem',
   },
@@ -21,7 +21,7 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
   const { children, onClose, ...other } = props
 
   return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other} className="text-emerald-50/95">
       {children}
       {onClose ? (
         <IconButton
@@ -57,14 +57,14 @@ export default function CustomDialog({
   }
 
   return (
-    <div className="w-full text-center pb-4">
+    <div className="w-full text-center ">
       <BootstrapDialog
         onClose={handleCloseBtn}
-        aria-labelledby="customized-dialog-title"
+        aria-labelledby="Agregar participante"
         open={open}
       >
         <BootstrapDialogTitle
-          id="customized-dialog-title"
+          id="Agregar participante"
           onClose={handleCloseBtn}
         >
           {title}
