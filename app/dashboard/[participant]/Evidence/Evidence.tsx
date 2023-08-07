@@ -1,12 +1,13 @@
 import { useRealtimeEvidence } from '@/hooks/useRealtimeEvidence'
 import React, { useState, useEffect } from 'react'
-import { Paper, Tabs } from '@mui/material'
+import { Fab, Paper, Tabs } from '@mui/material'
 import Tab from '@mui/material/Tab'
 import TabPanel, { a11yProps } from '@/components/TabPanel'
 import { ListEvidence } from './ListEvidence'
 import EvidenceSkeleton from './EvidenceSkeleton'
 import { useAlertToast } from '@/hooks/useAlertToast'
 import { AlertToast } from '@/components/AlertToast'
+import AddIcon from '@mui/icons-material/Add'
 import {
   EVIDENCE,
   E_ACCEPTED,
@@ -71,7 +72,7 @@ export function Evidence() {
             width="6/6"
             closeBtn={false}
             linkTitle="Aqui"
-            linkSrc={`/participants/${participantId}`}
+            linkSrc={`/manage/evidence?participantId=${participantId}`}
           />
         </div>
       </Card>
@@ -115,7 +116,19 @@ export function Evidence() {
           <Tab label="pendientes" {...a11yProps(0)} />
           <Tab label="Aceptados" {...a11yProps(1)} />
           <Tab label="Rechazados" {...a11yProps(2)} />
-          <Tab label="Agregar" {...a11yProps(3)} />
+          <div className="w-full text-center ">
+            <Fab
+              size="small"
+              href={`/manage/evidence?participantId=${participantId}`}
+              target="_blank"
+              color="secondary"
+              aria-label="add participant"
+              className="border-solid border-2 border-purple-300/40 text-purple-300/90 hover:bg-slate-900 bg-transparent"
+            >
+              <AddIcon />
+            </Fab>
+            <h3 className="text-gray-500 text-xs pt-2"> </h3>
+          </div>
         </Tabs>
         <TabPanel isVertical value={value} index={0}>
           <ListEvidence
@@ -137,9 +150,6 @@ export function Evidence() {
             status={E_REJECTED}
             handleViewer={handleViewer}
           />
-        </TabPanel>
-        <TabPanel isVertical value={value} index={3}>
-          Item Four
         </TabPanel>
       </Paper>
     </Card>
