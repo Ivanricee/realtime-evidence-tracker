@@ -40,17 +40,6 @@ export const DATABASE_STATUS = {
     },
   },
   [PARTICIPANTS]: {
-    [INSERT]: {
-      [STATUS_SUCCESS]: {
-        message:
-          'Participante agregado correctamente, puedes cerrar o seguir agregando',
-        connectionStatus: 'success',
-      },
-      [STATUS_ERROR]: {
-        message: 'Ocurrio un error al intentar crear un nuevo participante',
-        connectionStatus: 'error',
-      },
-    },
     [SELECT]: {
       [NO_DATA]: {
         message:
