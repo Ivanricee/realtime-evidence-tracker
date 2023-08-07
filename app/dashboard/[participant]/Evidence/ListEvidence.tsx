@@ -99,7 +99,7 @@ export function ListEvidence({ evidences, status, handleViewer }: Props) {
 
   if (filterEvidence.length === 0)
     return (
-      <div className="flex justify-center items-center h-full">
+      <div className="flex justify-center items-center h-full p-4">
         <AlertToast
           alertToast={alertToast}
           resetAlertToast={resetAlertToast}
@@ -133,15 +133,17 @@ export function ListEvidence({ evidences, status, handleViewer }: Props) {
                 >
                   <ListItemText
                     primary={evidence.url}
-                    className="text-purple-100/80 truncate "
+                    className="truncate text-purple-100/80 w-1"
+                    primaryTypographyProps={{
+                      style: { overflow: 'hidden', textOverflow: 'ellipsis' },
+                    }}
                   />
                 </ListItemButton>
 
                 <Fade in={isSelected} {...(isSelected ? { timeout: 600 } : {})}>
                   <ListItemIcon
                     className="absolute right-0  h-full w-1/3 justify-end items-center
-                   bg-gradient-to-l from-zinc-800/80 ...  from-50%  to-90%
-                  "
+                   bg-gradient-to-l from-zinc-800/80 from-50%  to-90%"
                   >
                     <IconButton
                       aria-label="check"
