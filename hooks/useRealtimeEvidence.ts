@@ -30,7 +30,7 @@ export function useRealtimeEvidence(): response {
     if (participantId) filter = { filter: `participant_id=eq.${participantId}` }
 
     const channel = supabase
-      .channel('onlyShot participants')
+      .channel('participants')
       .on(
         'postgres_changes',
         {
