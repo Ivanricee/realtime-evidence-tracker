@@ -15,7 +15,7 @@ export default function ParticipantList({ serverParticipants }: Props) {
 
   useEffect(() => {
     const channel = supabase
-      .channel('onlyShot participants')
+      .channel('participants')
       .on(
         'postgres_changes',
         {
