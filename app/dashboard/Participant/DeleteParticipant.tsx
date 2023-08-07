@@ -1,8 +1,8 @@
 import { DialogContent, DialogActions, Button } from '@mui/material'
 import CustomDialog from '@/components/CustomDialog'
-import { deleteParticipant } from '@/app/actions/getParticipants'
 import { useRouter } from 'next/navigation'
 import { Toaster, toast } from 'sonner'
+import { deleteParticipant } from '@/app/actions/participantActions'
 type PropsEditDelete = {
   isOpen: boolean
   closeModal: () => void
