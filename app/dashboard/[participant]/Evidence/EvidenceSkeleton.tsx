@@ -9,10 +9,6 @@ export default function EvidenceSkeleton() {
       >
         <div className="flex flex-col h-full">
           <Skeleton variant="rounded" className="w-full h-full" />
-          <div className="flex justify-center gap-4">
-            <Skeleton variant="text" className="w-32 h-16" />
-            <Skeleton variant="text" className="w-32 h-16" />
-          </div>
         </div>
       </Paper>
       <Paper
@@ -21,7 +17,7 @@ export default function EvidenceSkeleton() {
   bg-transparent bg-gradient-to-t from-zinc-800/30 from-30% ... to-70%"
       >
         <div className="flex flex-col w-2/12">
-          {Array.from({ length: 4 }).map((_, index) => (
+          {Array.from({ length: 3 }).map((_, index) => (
             <Skeleton key={index} variant="text" className="w-full h-10 py-6" />
           ))}
         </div>
