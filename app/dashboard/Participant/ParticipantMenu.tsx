@@ -73,7 +73,7 @@ export default function ParticipantMenu({ expand = false }: Props) {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [particEvidence])
+  }, [particEvidence, loading])
 
   if (loading)
     return (

@@ -62,7 +62,7 @@ export default function ParticipantStats() {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [particSancion])
+  }, [particSancion, loading])
 
   if (loading)
     return (

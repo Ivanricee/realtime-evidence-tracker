@@ -56,7 +56,7 @@ export function Evidence() {
       } else if (alertToast.isOpen) resetAlertToast()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [evidences])
+  }, [evidences, loading])
 
   const handleViewer = (id: number, url: string) => {
     setMedia({ id, url })
@@ -71,8 +71,6 @@ export function Evidence() {
             resetAlertToast={resetAlertToast}
             width="6/6"
             closeBtn={false}
-            linkTitle="Aqui"
-            linkSrc={`/manage/evidence?participantId=${participantId}`}
           />
         </div>
       </Card>
