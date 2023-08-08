@@ -38,8 +38,8 @@ export function Menu() {
             <ListItemText primary="Evidencias" />
           </ListItemButton>
         </Link>
-        <Link href="/manage/questions">
-          <ListItemButton selected={pathname === '/manage/questions'}>
+        <Link href="/manage/quizz">
+          <ListItemButton selected={pathname === '/manage/quiz'}>
             <ListItemIcon className="min-w-0 pr-2 text-emerald-50/80">
               <QuizIcon />
             </ListItemIcon>
