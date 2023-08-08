@@ -5,7 +5,21 @@ import { cookies } from 'next/headers'
 type Props = {
   participantId: string | null
 }
-export const getParticipants = async ({ participantId }: Props) => {
+export const getParticipants = async () => {
+  const supabase = createServerActionClient({ cookies })
+  try {
+    const { data, error } = await supabase.from('participants').select()
+    if (error) {
+      return [{ data: null, status: 404 }]
+    }
+    return data
+  } catch (error) {
+    console.log('error de conexion ', error)
+    return [{ data: null, status: 404 }]
+  }
+}
+
+export const getParticipantsById = async ({ participantId }: Props) => {
   const supabase = createServerActionClient({ cookies })
 
   try {
