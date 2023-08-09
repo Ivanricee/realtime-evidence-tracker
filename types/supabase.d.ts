@@ -94,7 +94,7 @@ export interface Database {
         }
         Relationships: []
       }
-      questions: {
+      quizz: {
         Row: {
           created_at: string | null
           id: number
@@ -118,19 +118,19 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'questions_participant_id_fkey'
+            foreignKeyName: 'quizz_participant_id_fkey'
             columns: ['participant_id']
             referencedRelation: 'participants'
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'questions_participant_id_fkey'
+            foreignKeyName: 'quizz_participant_id_fkey'
             columns: ['participant_id']
             referencedRelation: 'participantevidenceview'
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'questions_participant_id_fkey'
+            foreignKeyName: 'quizz_participant_id_fkey'
             columns: ['participant_id']
             referencedRelation: 'participantsancionview'
             referencedColumns: ['id']
@@ -143,21 +143,24 @@ export interface Database {
           evidence_id: number | null
           id: number
           participant_id: number | null
-          question_id: number | null
+          quizz_id: number | null
+          status: string
         }
         Insert: {
           created_at?: string | null
           evidence_id?: number | null
           id?: number
           participant_id?: number | null
-          question_id?: number | null
+          quizz_id?: number | null
+          status?: string
         }
         Update: {
           created_at?: string | null
           evidence_id?: number | null
           id?: number
           participant_id?: number | null
-          question_id?: number | null
+          quizz_id?: number | null
+          status?: string
         }
         Relationships: [
           {
@@ -185,9 +188,9 @@ export interface Database {
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'sancion_question_id_fkey'
-            columns: ['question_id']
-            referencedRelation: 'questions'
+            foreignKeyName: 'sancion_quizz_id_fkey'
+            columns: ['quizz_id']
+            referencedRelation: 'quizz'
             referencedColumns: ['id']
           },
         ]
@@ -209,6 +212,7 @@ export interface Database {
           imgProfile: string | null
           name: string | null
           sanciontotal: number | null
+          totalfulfilled: number | null
         }
         Relationships: []
       }
