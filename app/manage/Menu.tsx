@@ -38,7 +38,7 @@ export function Menu() {
             <ListItemText primary="Evidencias" />
           </ListItemButton>
         </Link>
-        <Link href="/manage/quizz">
+        <Link href="/manage/quiz">
           <ListItemButton selected={pathname === '/manage/quiz'}>
             <ListItemIcon className="min-w-0 pr-2 text-emerald-50/80">
               <QuizIcon />
