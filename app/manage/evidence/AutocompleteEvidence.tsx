@@ -44,6 +44,7 @@ export function AutocompleteParticipant({
           openOnFocus
           options={participants}
           getOptionLabel={(option) => (option?.name ? option?.name : '')}
+          isOptionEqualToValue={(option, value) => option?.id === value?.id}
           sx={{ width: 300 }}
           renderInput={(params) => (
             <TextField {...params} label="Selecciona un participante" />
