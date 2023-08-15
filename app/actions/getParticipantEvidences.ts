@@ -1,12 +1,12 @@
 'use server'
 
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createServerActionClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 type Props = {
   participantId: string
 }
 export const getParticipantEvidences = async ({ participantId }: Props) => {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = createServerActionClient({ cookies })
 
   try {
     const { data, error } = await supabase
