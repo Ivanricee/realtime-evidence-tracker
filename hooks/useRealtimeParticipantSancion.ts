@@ -1,12 +1,21 @@
 import { getParticipantSancion } from '@/app/actions/getParticipantSancion'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-
-import { useParams } from 'next/navigation'
+import {
+  RealtimePostgresChangesFilter,
+  RealtimePostgresUpdatePayload,
+  UpdatableFactorAttributes,
+} from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
 
 type responseHook = [participantsancionview[], boolean, SupabaseError | null]
-export function useRealtimeParticipantSancion(): responseHook {
-  const { participant: participantId } = useParams()
+type Props = {
+  participantId: string | null
+  isSingleRow?: boolean
+}
+export function useRealtimeParticipantSancion({
+  participantId,
+  isSingleRow = false,
+}: Props): responseHook {
   const supabase = createClientComponentClient<Database>()
 
   const [loading, setLoading] = useState(true)
@@ -16,17 +25,21 @@ export function useRealtimeParticipantSancion(): responseHook {
   >([])
 
   useEffect(() => {
-    if (!loading) setLoading(true)
-    const participantSancion = async () => {
-      const response = await getParticipantSancion({ participantId })
-      if (response[0]?.data === null) {
-        setError(response[0])
-      } else {
-        setParticSancion(response)
+    if (participantId) {
+      if (!loading) setLoading(true)
+
+      const participantSancion = async () => {
+        const response = await getParticipantSancion({ participantId })
+        if (response[0]?.data === null) {
+          setError(response[0])
+        } else {
+          setParticSancion(response)
+        }
+        await setLoading(false)
       }
-      setLoading(false)
+      participantSancion()
     }
-    participantSancion()
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [participantId])
 
@@ -37,16 +50,22 @@ export function useRealtimeParticipantSancion(): responseHook {
       .on(
         'postgres_changes',
         {
-          event: '*',
           schema: 'public',
           table: 'sancion',
+          event: '*',
         },
-        (payload) => {
-          const participantSancion = async () => {
-            const response = await getParticipantSancion({ participantId })
-            if (!response[0]?.error) setParticSancion(response)
+        (payload: any) => {
+          const newParticipantId = payload?.new.participant_id || 0
+          if (
+            Number(participantId) === newParticipantId ||
+            payload.eventType === 'DELETE'
+          ) {
+            const participantSancion = async () => {
+              const response = await getParticipantSancion({ participantId })
+              if (!response[0]?.error) setParticSancion(response)
+            }
+            participantSancion()
           }
-          participantSancion()
         }
       )
       .subscribe()
