@@ -1,4 +1,4 @@
-import { getEvidence } from '@/app/actions/getEvidence'
+import { getEvidence } from '@/app/actions/evidenceActions'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -30,7 +30,7 @@ export function useRealtimeEvidence(): response {
     if (participantId) filter = { filter: `participant_id=eq.${participantId}` }
 
     const channel = supabase
-      .channel('participants')
+      .channel('evidence')
       .on(
         'postgres_changes',
         {
