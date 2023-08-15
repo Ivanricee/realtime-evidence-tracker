@@ -5,18 +5,26 @@ import { AutocompleteParticipant } from './AutocompleteEvidence'
 import { useAlertToast } from '@/hooks/useAlertToast'
 import { AlertToast } from '@/components/AlertToast'
 import { useEffect, useState } from 'react'
-import { NO_DATA, PARTICIPANTS, SELECT } from '@/const'
+import { E_FULFILLED, NO_DATA, PARTICIPANTS, SELECT } from '@/const'
 import { Grow, Skeleton } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import { useSearchParams } from 'next/navigation'
 import { EvidenceForm } from './EvidenceForm'
-type Props = {
-  searchParams: { participantId: string }
-}
+import Button from '@mui/material/Button'
+import { useRealtimeParticipantSancion } from '@/hooks/useRealtimeParticipantSancion'
+import { useSanctionEdit } from '@/hooks/useSanctionEdit'
+import { Toaster } from 'sonner'
 
 export default function Evidence() {
   const [participant, setParticipant] = useState<Participants | null>(null)
   const [participants, loading, error] = useParticipants()
+  const [editSanctionStatus, loadingSanction] = useSanctionEdit()
+  const [sancion, loadingSancion, errorSancion] = useRealtimeParticipantSancion(
+    {
+      participantId: participant?.id ? String(participant?.id) : null,
+      isSingleRow: true,
+    }
+  )
   const [alertToast, openAlertToast, resetAlertToast] = useAlertToast()
   const searchParams = useSearchParams()
   const participantId = searchParams.get('participantId')
@@ -59,7 +67,7 @@ export default function Evidence() {
         )}
       </>
     )
-  //error/empty data
+
   if (alertToast.isOpen)
     return (
       <>
@@ -74,6 +82,42 @@ export default function Evidence() {
     )
   return (
     <>
+      {sancion[0] && (
+        <Grow in={Boolean(sancion[0])}>
+          <div className="bg-purple-500/10 p-4 w-full flex justify-center items-center mb-10 rounded-lg">
+            <div className="w-72 flex justify-between items-center">
+              <div className="text-center flex flex-col border border-purple-400/10 p-2">
+                <strong className="text-4xl flex justify-center">
+                  {loadingSancion ? (
+                    <Skeleton variant="rectangular" width={35} height={40} />
+                  ) : (
+                    sancion[0].sanciontotal
+                  )}
+                </strong>
+                <small>Sanciones</small>
+              </div>
+              <div>
+                <Button
+                  variant="outlined"
+                  disabled={
+                    loadingSancion || sancion[0].sanciontotal === 0
+                      ? true
+                      : false
+                  }
+                  onClick={() =>
+                    editSanctionStatus({
+                      id: Number(sancion[0].id),
+                      status: E_FULFILLED,
+                    })
+                  }
+                >
+                  Cumplir sanciones
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Grow>
+      )}
       <AutocompleteParticipant
         participantId={participantId}
         participants={participants}
@@ -88,6 +132,7 @@ export default function Evidence() {
           </div>
         </Grow>
       )}
+      <Toaster position="bottom-left" richColors closeButton />
     </>
   )
 }
