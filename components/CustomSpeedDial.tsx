@@ -39,8 +39,6 @@ export default function CustomSpeedDial({ isHidden }: { isHidden: boolean }) {
   const [hidden, setHidden] = React.useState(false)
 
   const handleHiddenChange = () => {
-    console.log('asda33')
-
     setHidden((prevHidden) => !prevHidden)
   }
 
