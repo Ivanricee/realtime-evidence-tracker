@@ -71,9 +71,12 @@ export function EvidenceForm({ serverParticipants }: Props) {
           id="participant_id"
           name="participant_id"
           label="participant id"
-          defaultValue={participant.id}
-          className="absolute invisible"
+          value={participant.id}
           variant="outlined"
+          hidden
+          InputProps={{
+            readOnly: true,
+          }}
         />
         <Submit description="Enviar Evidencia" />
       </form>
