@@ -44,8 +44,10 @@ function SkeletonList() {
   )
 }
 export default function ParticipantStats() {
-  const { participant: idParticipant } = useParams()
-  const [particSancion, loading, error] = useRealtimeParticipantSancion()
+  const { participant: participantId } = useParams()
+  const [particSancion, loading, error] = useRealtimeParticipantSancion({
+    participantId,
+  })
   const [alertToast, openAlertToast, resetAlertToast] = useAlertToast()
 
   useEffect(() => {
