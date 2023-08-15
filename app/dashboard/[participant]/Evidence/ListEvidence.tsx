@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import {
   EMPTY_LIST,
   EVIDENCE,
@@ -7,7 +7,6 @@ import {
   E_REJECTED,
   SELECT,
 } from '@/const'
-import { editEvidence } from '@/app/actions/getEvidence'
 import List from '@mui/material/List'
 import Divider from '@mui/material/Divider'
 import ListItemButton from '@mui/material/ListItemButton'
@@ -18,9 +17,10 @@ import ListItem from '@mui/material/ListItem'
 import { Fade } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
-import { Toaster, toast } from 'sonner'
+import { Toaster } from 'sonner'
 import { AlertToast } from '@/components/AlertToast'
 import { useAlertToast } from '@/hooks/useAlertToast'
+import { useEvidenceEdit } from '@/hooks/useEvidenceEdit'
 
 type Props = {
   evidences: Evidence[]
@@ -32,47 +32,31 @@ type editProps = {
   status: string
 }
 export function ListEvidence({ evidences, status, handleViewer }: Props) {
-  const filterEvidence = evidences.filter(
-    (evidence) => evidence.status === status
-  )
-  const initSelectedItms = useRef({
-    id: filterEvidence[0]?.id || 0,
-    url: filterEvidence[0]?.url || '',
+  const [evidenceFilter, editEvidenceStatus, loadEdit] = useEvidenceEdit({
+    evidences,
+    status,
   })
-  const [selectedItm, setSelectedItm] = useState(initSelectedItms.current)
-  const [loadEdit, setLoadEdit] = useState(false)
-  const [alertToast, openAlertToast, resetAlertToast] = useAlertToast()
-  const handleEditStatusClick = async ({ id, status }: editProps) => {
-    setLoadEdit(true)
-    const res = await editEvidence({ id, status })
-    if (res === 204) {
-      let statusMsg = 'Evidencia aceptada'
-      if (status === E_REJECTED) statusMsg = 'Evidencia rechazada.'
-      toast.success(statusMsg)
-    } else {
-      toast.error('Algo salio mal, intenta mas terde')
-    }
-    if (filterEvidence.length !== 0) {
-      setSelectedItm((prevItem) => {
-        let index = 0
-        if (prevItem.id === filterEvidence[0]?.id) index = 1
+  const [selectedItm, setSelectedItm] = useState({
+    id: evidenceFilter[0]?.id || 0,
+    url: evidenceFilter[0]?.url || '',
+  })
 
-        const initItemId = filterEvidence[index]?.id
-        const initItemUrl = filterEvidence[index]?.url || ''
-        handleViewer(initItemId, initItemUrl)
-        return {
-          id: initItemId,
-          url: initItemUrl,
-        }
-      })
+  const [alertToast, openAlertToast, resetAlertToast] = useAlertToast()
+
+  const selectFirstListItem = () => {
+    if (evidenceFilter.length !== 0) {
+      let index = selectedItm.id === evidenceFilter[0]?.id ? 1 : 0
+      const selectId = evidenceFilter[index]?.id || 0
+      const selectUrl = evidenceFilter[index]?.url || ''
+      setSelectedItm({ id: selectId, url: selectUrl })
+      handleViewer(selectId, selectUrl)
     }
-    setLoadEdit(false)
   }
-  const handleListItemClick = (
-    id: number,
-    url: string,
-    event?: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
+  const handleEditStatus = ({ id, status }: editProps) => {
+    editEvidenceStatus({ id, status })
+    selectFirstListItem()
+  }
+  const handleSelectItem = (id: number, url: string) => {
     setSelectedItm({ id, url })
     handleViewer(id, url)
   }
@@ -81,13 +65,15 @@ export function ListEvidence({ evidences, status, handleViewer }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   useEffect(() => {
-    if (filterEvidence.length === 0) {
+    if (evidenceFilter.length === 0) {
       openAlertToast({
         feature: EVIDENCE,
         action: SELECT,
         status: EMPTY_LIST,
       })
-    }
+      setSelectedItm({ id: 0, url: '' })
+    } else if (selectedItm.id === 0) selectFirstListItem()
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [evidences])
   const title: Record<string, string> = {
@@ -97,7 +83,7 @@ export function ListEvidence({ evidences, status, handleViewer }: Props) {
     add: 'Agregar Evidencias',
   }
 
-  if (filterEvidence.length === 0)
+  if (evidenceFilter.length === 0)
     return (
       <div className="flex justify-center items-center h-full p-4">
         <AlertToast
@@ -119,15 +105,15 @@ export function ListEvidence({ evidences, status, handleViewer }: Props) {
         aria-label="secondary mailbox folder"
         className="w-full pb-4"
       >
-        {filterEvidence.map((evidence) => {
+        {evidenceFilter.map((evidence) => {
           const isSelected = selectedItm.id === evidence.id
           return (
             <div key={evidence.id}>
               <ListItem disablePadding className="rounded-md overflow-hidden">
                 <ListItemButton
                   selected={isSelected}
-                  onClick={(event) =>
-                    handleListItemClick(evidence.id, evidence.url || '', event)
+                  onClick={() =>
+                    handleSelectItem(evidence.id, evidence.url || '')
                   }
                   className={`h-10 ${isSelected ? 'bg-purple-300/30' : ''}`}
                 >
@@ -149,7 +135,7 @@ export function ListEvidence({ evidences, status, handleViewer }: Props) {
                       aria-label="check"
                       disabled={status === E_ACCEPTED || loadEdit}
                       onClick={() =>
-                        handleEditStatusClick({
+                        handleEditStatus({
                           id: evidence.id,
                           status: E_ACCEPTED,
                         })
@@ -161,7 +147,7 @@ export function ListEvidence({ evidences, status, handleViewer }: Props) {
                       aria-label="delete"
                       disabled={status === E_REJECTED || loadEdit}
                       onClick={() =>
-                        handleEditStatusClick({
+                        handleEditStatus({
                           id: evidence.id,
                           status: E_REJECTED,
                         })
