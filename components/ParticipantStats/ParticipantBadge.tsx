@@ -1,6 +1,6 @@
 'use client'
-import { useRealtimeSancion } from '@/hooks/useRealtimeSancion'
-import { Avatar, Paper } from '@mui/material'
+
+import { Avatar, Badge, Tooltip } from '@mui/material'
 
 type Props = {
   participant: participantsancionview
@@ -10,27 +10,24 @@ const sancionDir: { [key: string]: string } = {
   1: '1 Sancion',
 }
 export default function ParticipantBadge({ participant }: Props) {
-  const { sanciontotal, name } = participant
+  const { sanciontotal, totalfulfilled, name } = participant
 
   return (
     <>
       <div className="w-full  mb-4">
         <div className="flex gap-2 items-center">
-          <div>
-            <Avatar
-              alt="profile participant"
-              src={participant.imgProfile!}
-              sx={{ width: 56, height: 56 }}
-            />
-          </div>
-          <div className="flex justify-center items-center gap-2 text-blue-300">
-            <strong className="text-4xl ">
-              {sanciontotal !== null && sanciontotal > 1 && sanciontotal}
-            </strong>
-            <p className="text-lg flex ">
-              {(sanciontotal !== null && sancionDir[sanciontotal]) ||
-                'Sanciones'}
-            </p>
+          <Tooltip title="Sanciones pendientes" placement="right-start">
+            <Badge badgeContent={sanciontotal} color="error">
+              <Avatar
+                alt="profile participant"
+                src={participant.imgProfile!}
+                sx={{ width: 56, height: 56 }}
+              />
+            </Badge>
+          </Tooltip>
+          <div className="flex justify-center items-center text-blue-300 flex-wrap w-full">
+            <strong className="w-full text-center">{totalfulfilled}</strong>
+            <p className="text-sm flex "> Sanciones totales</p>
           </div>
         </div>
       </div>
