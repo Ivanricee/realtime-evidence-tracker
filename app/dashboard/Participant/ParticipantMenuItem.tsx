@@ -68,7 +68,7 @@ const ParticipantMenuItemComponent = ({ participant }: Props) => {
 
   return (
     <div key={participant.id} className="relative">
-      <Link key={participant.id} href={`/dashboard/${participant.id}`}>
+      <Link key={participant.id} href={`/dashboard/evidence/${participant.id}`}>
         <ListItemButton dense selected={isSelected}>
           <ListItemAvatar className="pr-4">
             <Badge badgeContent={participant.pendingevidence} color="primary">
