@@ -1,4 +1,5 @@
 import ParticipantMenu from './Participant/ParticipantMenu'
+import SecondaryMenu from './SecondaryMenu'
 
 type Props = {
   children: React.ReactNode
@@ -13,7 +14,9 @@ export default async function DashboardLayout({ children }: Props) {
         >
           <ParticipantMenu expand />
         </section>
-        <div className="w-8/12 xl:w-7/12 rounded-lg">{children}</div>
+        <div className="w-8/12 xl:w-7/12 rounded-lg">
+          <SecondaryMenu>{children}</SecondaryMenu>
+        </div>
       </section>
     </section>
   )
