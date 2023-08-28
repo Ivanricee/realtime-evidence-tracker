@@ -1,7 +1,12 @@
 import { getParticipantQuizByid } from '@/app/actions/quizActions'
 import { useState } from 'react'
-
-type response = [Participants[], boolean, SupabaseError | null]
+type getParticipantQuizType = ({ ids }: { ids: number[] }) => void
+type response = [
+  Participants[],
+  boolean,
+  SupabaseError | null,
+  getParticipantQuizType,
+]
 
 export function useParticipantQuiz(): response {
   const [loading, setLoading] = useState(false)
@@ -12,7 +17,7 @@ export function useParticipantQuiz(): response {
     []
   )
 
-  const getParticipantQuiz = async ({ ids }: { ids: [string] }) => {
+  const getParticipantQuiz = async ({ ids }: { ids: number[] }) => {
     setLoading(true)
     if (error !== null) setError(null)
     const response = await getParticipantQuizByid({ ids })
