@@ -5,7 +5,7 @@ import { createServerActionClient } from '@supabase/auth-helpers-nextjs'
 import { PostgrestSingleResponse } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 
-export const getParticipantQuizByid = async ({ ids }: { ids: [number] }) => {
+export const getParticipantQuizByid = async ({ ids }: { ids: number[] }) => {
   const supabase = createServerActionClient({ cookies })
   try {
     const { data, error } = await supabase
