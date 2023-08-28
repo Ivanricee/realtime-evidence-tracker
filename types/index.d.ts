@@ -13,3 +13,14 @@ export type MessageStatus = {
     }
   }
 }
+export type quizAnswers = {
+  answer: string
+  option: number
+  isCorrect: boolean
+}
+export type quizData = {
+  question: string
+  answers: quizAnswers[]
+  participants: Participants[]
+  time: number
+}
