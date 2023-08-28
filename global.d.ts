@@ -5,7 +5,9 @@ declare global {
   type SupabaseError = { data: null; status: number }
   type Participants = Database['public']['Tables']['participants']['Row']
   type Evidence = Database['public']['Tables']['evidence']['Row']
-  type Questions = Database['public']['Tables']['quizz']['Row']
+  type Quiz = Database['public']['Tables']['quiz']['Row']
+  type participantQuiz = Database['public']['Tables']['participantQuiz']['Row']
+
   type Sancion = Database['public']['Tables']['sancion']['Row']
   type participantEvidenceView =
     Database['public']['Views']['participantevidenceview']['Row']
