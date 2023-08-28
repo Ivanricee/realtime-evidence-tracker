@@ -73,6 +73,61 @@ export interface Database {
         }
         Relationships: []
       }
+      participantQuiz: {
+        Row: {
+          created_at: string
+          id: number
+          participant_answer: string | null
+          participant_id: number
+          quiz_id: number
+          status: string
+          time: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          participant_answer?: string | null
+          participant_id: number
+          quiz_id: number
+          status?: string
+          time?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          participant_answer?: string | null
+          participant_id?: number
+          quiz_id?: number
+          status?: string
+          time?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'participantQuiz_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participants'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'participantQuiz_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participantevidenceview'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'participantQuiz_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participantsancionview'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'participantQuiz_quiz_id_fkey'
+            columns: ['quiz_id']
+            referencedRelation: 'quiz'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       participants: {
         Row: {
           created_at: string | null
@@ -94,48 +149,26 @@ export interface Database {
         }
         Relationships: []
       }
-      quizz: {
+      quiz: {
         Row: {
+          answers: Json[] | null
           created_at: string | null
           id: number
-          participant_id: number | null
           question: string | null
-          status: string | null
         }
         Insert: {
+          answers?: Json[] | null
           created_at?: string | null
           id?: number
-          participant_id?: number | null
           question?: string | null
-          status?: string | null
         }
         Update: {
+          answers?: Json[] | null
           created_at?: string | null
           id?: number
-          participant_id?: number | null
           question?: string | null
-          status?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: 'quizz_participant_id_fkey'
-            columns: ['participant_id']
-            referencedRelation: 'participants'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'quizz_participant_id_fkey'
-            columns: ['participant_id']
-            referencedRelation: 'participantevidenceview'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'quizz_participant_id_fkey'
-            columns: ['participant_id']
-            referencedRelation: 'participantsancionview'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
       sancion: {
         Row: {
@@ -143,7 +176,7 @@ export interface Database {
           evidence_id: number | null
           id: number
           participant_id: number | null
-          quizz_id: number | null
+          participant_quiz_id: number | null
           status: string
         }
         Insert: {
@@ -151,7 +184,7 @@ export interface Database {
           evidence_id?: number | null
           id?: number
           participant_id?: number | null
-          quizz_id?: number | null
+          participant_quiz_id?: number | null
           status?: string
         }
         Update: {
@@ -159,7 +192,7 @@ export interface Database {
           evidence_id?: number | null
           id?: number
           participant_id?: number | null
-          quizz_id?: number | null
+          participant_quiz_id?: number | null
           status?: string
         }
         Relationships: [
@@ -188,9 +221,15 @@ export interface Database {
             referencedColumns: ['id']
           },
           {
-            foreignKeyName: 'sancion_quizz_id_fkey'
-            columns: ['quizz_id']
-            referencedRelation: 'quizz'
+            foreignKeyName: 'sancion_participant_quiz_id_fkey'
+            columns: ['participant_quiz_id']
+            referencedRelation: 'participantQuiz'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'sancion_participant_quiz_id_fkey'
+            columns: ['participant_quiz_id']
+            referencedRelation: 'quizresults'
             referencedColumns: ['id']
           },
         ]
@@ -213,6 +252,21 @@ export interface Database {
           name: string | null
           sanciontotal: number | null
           totalfulfilled: number | null
+        }
+        Relationships: []
+      }
+      quizresults: {
+        Row: {
+          answers: Json[] | null
+          created_at: string | null
+          id: number | null
+          imgProfile: string | null
+          name: string | null
+          participant_answer: string | null
+          question: string | null
+          remainingsec: number | null
+          status: string | null
+          time: number | null
         }
         Relationships: []
       }
