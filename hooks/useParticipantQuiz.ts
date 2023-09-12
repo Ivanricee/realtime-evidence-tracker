@@ -1,27 +1,43 @@
 import { getParticipantQuizByid } from '@/app/actions/quizActions'
-import { useState } from 'react'
-type getParticipantQuizType = ({ ids }: { ids: number[] }) => void
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+
+import { useEffect, useState } from 'react'
+type fnPropsType = {
+  ids?: number[] | null
+  participantId?: number | null
+}
+type getParticipantQuizType = ({ ids }: fnPropsType) => void
+type resetDataType = () => void
 type response = [
-  Participants[],
+  quizResultsView[],
   boolean,
   SupabaseError | null,
   getParticipantQuizType,
+  resetDataType?,
 ]
-
-export function useParticipantQuiz(): response {
-  const [loading, setLoading] = useState(false)
+const supabase = createClientComponentClient()
+interface usePQ {
+  participantId?: null | number
+}
+export function useParticipantQuiz({ participantId = null }: usePQ): response {
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState<SupabaseError | null>(null)
-  const [loadingEdit, setLoadingEdit] = useState(false)
-  const [errorEdit, setErrorEdit] = useState<SupabaseError | null>(null)
-  const [participantQuiz, setParticipantQuiz] = useState<Participants[] | []>(
-    []
-  )
+  const [participantQuiz, setParticipantQuiz] = useState<
+    quizResultsView[] | []
+  >([])
 
-  const getParticipantQuiz = async ({ ids }: { ids: number[] }) => {
-    setLoading(true)
-    if (error !== null) setError(null)
-    const response = await getParticipantQuizByid({ ids })
-    console.log('participan hook ', response)
+  const resetData = () => {
+    error !== null && setError(null)
+    !loading && setLoading(true)
+    participantQuiz.length !== 0 && setParticipantQuiz([])
+  }
+
+  const getParticipantQuiz = async ({
+    ids = null,
+    participantId = null,
+  }: fnPropsType) => {
+    const response = await getParticipantQuizByid({ ids, participantId })
+    console.log('response server ', response)
 
     if (response[0]?.data === null) {
       setError(response[0])
@@ -29,9 +45,32 @@ export function useParticipantQuiz(): response {
       setParticipantQuiz(response)
     }
     setLoading(false)
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }
-  //const updateParticipantQuiz = async ({ ids }: { ids: [string] }) => {}
+  useEffect(() => {
+    let filter = {}
+    if (participantId) filter = { filter: `participant_id=eq.${participantId}` }
+
+    const channelPQ = supabase
+      .channel('pq-insert-channel')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'participantQuiz',
+          ...filter,
+        },
+        (payload) => {
+          //console.log('--- payload --- Change received!-----', payload)
+          const ids: number[] = [Number(payload.new.id)]
+          getParticipantQuiz({ ids })
+        }
+      )
+      .subscribe()
+    return () => {
+      supabase.removeChannel(channelPQ)
+    }
+  }, [participantId])
+
   return [participantQuiz, loading, error, getParticipantQuiz]
 }
