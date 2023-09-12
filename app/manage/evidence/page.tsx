@@ -28,7 +28,7 @@ export default function Evidence() {
   }
 
   return (
-    <>
+    <div className="flex flex-col gap-8 items-center justify-center h-full">
       {sancion[0] && (
         <Grow in={Boolean(sancion[0])}>
           <div className="bg-purple-500/10 p-4 w-full flex justify-center items-center mb-10 rounded-lg">
@@ -91,6 +91,6 @@ export default function Evidence() {
           </>
         )
       }
-    </>
+    </div>
   )
 }
