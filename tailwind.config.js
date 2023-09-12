@@ -10,7 +10,14 @@ module.exports = {
 
   important: '#__next',
   theme: {
-    extend: {},
+    extend: {
+      placeContent: {
+        'center-stretch': 'center stretch',
+      },
+      placeItems: {
+        center: 'center',
+      },
+    },
   },
   plugins: [],
 }
