@@ -7,7 +7,12 @@ declare global {
   type Evidence = Database['public']['Tables']['evidence']['Row']
   type Quiz = Database['public']['Tables']['quiz']['Row']
   type participantQuiz = Database['public']['Tables']['participantQuiz']['Row']
-
+  type quizResultsView = Database['public']['Views']['quizresults']['Row']
+  type AnswerType = {
+    answer: string
+    option: number
+    isCorrect: boolean
+  }
   type Sancion = Database['public']['Tables']['sancion']['Row']
   type participantEvidenceView =
     Database['public']['Views']['participantevidenceview']['Row']
