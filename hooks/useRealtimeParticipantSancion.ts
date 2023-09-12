@@ -1,10 +1,5 @@
 import { getParticipantSancion } from '@/app/actions/getParticipantSancion'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import {
-  RealtimePostgresChangesFilter,
-  RealtimePostgresUpdatePayload,
-  UpdatableFactorAttributes,
-} from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
 
 type responseHook = [participantsancionview[], boolean, SupabaseError | null]
