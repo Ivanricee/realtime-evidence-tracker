@@ -4,15 +4,22 @@ import type { quizData } from '@/types'
 import { createServerActionClient } from '@supabase/auth-helpers-nextjs'
 import { PostgrestSingleResponse } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
-
-export const getParticipantQuizByid = async ({ ids }: { ids: number[] }) => {
+type Props = { ids?: number[] | null; participantId?: number | null }
+export const getParticipantQuizByid = async ({
+  ids = null,
+  participantId = null,
+}: Props) => {
   const supabase = createServerActionClient({ cookies })
   try {
-    const { data, error } = await supabase
-      .from('participantQuiz')
-      .select('*')
-      .in('id', ids)
-    console.log('action fn ', { data, error })
+    let query = supabase.from('quizresults').select('*')
+    if (ids !== null) {
+      query.in('id', ids)
+    } else if (participantId !== null) {
+      query.eq('participant_id', participantId)
+    }
+    const resultQuery = await query
+
+    const { data, error } = resultQuery
     if (error) {
       return [{ data: null, status: 404 }]
     }
@@ -22,21 +29,40 @@ export const getParticipantQuizByid = async ({ ids }: { ids: number[] }) => {
     return [{ data: null, status: 404 }]
   }
 }
-export const editParticipantAction = async (formData: FormData) => {
-  const id = formData.get('id')
-  const name = formData.get('name')
-  const imgProfile = formData.get('imgProfile')
+type editPQType = { ids: number[]; status: string; answer: string }
+export const editParticipantQuizAction = async ({
+  ids,
+  status,
+  answer,
+}: editPQType) => {
   const supabase = createServerActionClient({ cookies })
-  try {
-    const { data, status } = await supabase
-      .from('participants')
-      .update({ name, imgProfile })
-      .eq('id', id)
-    return { data, status }
-  } catch (error) {
-    console.log('error de conexion particpants', error)
+  //console.log('edit answer', { ids, status, answer })
 
-    return { data: null, status: 404 }
+  try {
+    const result = await supabase
+      .from('participantQuiz')
+      .update({ status, participant_answer: answer })
+      .in('id', ids)
+    //console.log('edit res', result)
+
+    if (result.error) {
+      return [{ data: null, status: 404 }]
+    } else {
+      //200
+      const { data, status } = result
+      if (status === 204) {
+        console.log(
+          '2--------------------------------------------es correcto ',
+          status
+        )
+
+        return [{ data, status }]
+      }
+      return [{ data: null, status: 404 }]
+    }
+  } catch (error) {
+    console.log('error al editar participantQuiz fuera de tiempo', error)
+    return [{ data: null, status: 404 }]
   }
 }
 export const addQuiz = async (quizData: quizData) => {
