@@ -17,7 +17,7 @@ import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt'
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt'
 import Link from 'next/link'
 type Props = {
-  participant?: number[]
+  participant?: number | number[] | null
   showDetails?: boolean
 }
 type AnswerType = {
@@ -29,7 +29,12 @@ export function QuizResult({ participant, showDetails = true }: Props) {
   const [participantQuiz, loading, error, getParticipantQuiz] =
     useParticipantQuiz({})
   useEffect(() => {
-    participant && getParticipantQuiz({ ids: participant })
+    if (participant) {
+      const ids: number[] = Array.isArray(participant)
+        ? participant
+        : [participant]
+      getParticipantQuiz({ ids })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   useEffect(() => {
