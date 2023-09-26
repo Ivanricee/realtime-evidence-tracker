@@ -1,5 +1,6 @@
 import { getParticipantQuizByid } from '@/app/actions/quizActions'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { RealtimeChannel } from '@supabase/supabase-js'
 
 import { useEffect, useState } from 'react'
 type fnPropsType = {
@@ -15,11 +16,12 @@ type response = [
   getParticipantQuizType,
   resetDataType?,
 ]
-const supabase = createClientComponentClient()
+
 interface usePQ {
   participantId?: null | number
 }
 export function useParticipantQuiz({ participantId = null }: usePQ): response {
+  const supabase = createClientComponentClient()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<SupabaseError | null>(null)
   const [participantQuiz, setParticipantQuiz] = useState<
@@ -37,7 +39,7 @@ export function useParticipantQuiz({ participantId = null }: usePQ): response {
     participantId = null,
   }: fnPropsType) => {
     const response = await getParticipantQuizByid({ ids, participantId })
-    console.log('response server ', response)
+    //console.log('response server ', response)
 
     if (response[0]?.data === null) {
       setError(response[0])
@@ -48,29 +50,32 @@ export function useParticipantQuiz({ participantId = null }: usePQ): response {
   }
   useEffect(() => {
     let filter = {}
-    if (participantId) filter = { filter: `participant_id=eq.${participantId}` }
+    let channelPQ: RealtimeChannel | null = null
+    if (participantId) {
+      filter = { filter: `participant_id=eq.${participantId}` }
 
-    const channelPQ = supabase
-      .channel('pq-insert-channel')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'participantQuiz',
-          ...filter,
-        },
-        (payload) => {
-          //console.log('--- payload --- Change received!-----', payload)
-          const ids: number[] = [Number(payload.new.id)]
-          getParticipantQuiz({ ids })
-        }
-      )
-      .subscribe()
-    return () => {
-      supabase.removeChannel(channelPQ)
+      channelPQ = supabase
+        .channel('pq-insert-channel')
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'participantQuiz',
+            ...filter,
+          },
+          (payload) => {
+            const ids: number[] = [Number(payload.new.id)]
+            getParticipantQuiz({ ids })
+          }
+        )
+        .subscribe()
     }
-  }, [participantId])
+    return () => {
+      if (channelPQ instanceof RealtimeChannel)
+        supabase.removeChannel(channelPQ)
+    }
+  }, [participantId, supabase])
 
   return [participantQuiz, loading, error, getParticipantQuiz]
 }
