@@ -17,6 +17,7 @@ import { QuizResult } from './QuizResult'
 
 type TautocompleteRef = {
   getOptionSelected: () => Participants[]
+  reset: () => void
 }
 type TinputsRef = {
   getValues: () => React.RefObject<HTMLInputElement>[]
