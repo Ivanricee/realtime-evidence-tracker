@@ -64,7 +64,7 @@ const ParticipantMenuItemComponent = ({ participant }: Props) => {
   }
   const setting = currentSetting[itemAction || ''] ?? null
 
-  const isSelected = pathname === `/dashboard/${participant.id}`
+  const isSelected = pathname === `/dashboard/evidence/${participant.id}`
 
   return (
     <div key={participant.id} className="relative">
