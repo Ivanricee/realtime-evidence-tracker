@@ -26,11 +26,11 @@ export default function SecondaryMenu({ children }: Props) {
   const MENU_HREF: Record<MenuKey, any> = {
     [M_EVIDENCIAS]: { url: '/dashboard/evidence', icon: <FindInPageIcon /> },
     [M_PREGUNTAS]: { url: '/dashboard/quiz', icon: <QuizIcon /> },
-    [M_BITSSUBS]: { url: '/dashboard/financial', icon: <PaidIcon /> },
+    [M_BITSSUBS]: { url: '/dashboard/finance', icon: <PaidIcon /> },
   }
   let menuTabValue = 0
   if (pathname.startsWith('/dashboard/quiz')) menuTabValue = 1
-  if (pathname.startsWith('/dashboard/financial')) menuTabValue = 2
+  if (pathname.startsWith('/dashboard/finance')) menuTabValue = 2
 
   return (
     <section aria-label="Evidence" className="w-full h-full flex flex-col">
