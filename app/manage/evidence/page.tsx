@@ -4,22 +4,15 @@ import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Grow, Skeleton } from '@mui/material'
 import Divider from '@mui/material/Divider'
-import Button from '@mui/material/Button'
-import { E_FULFILLED } from '@/const'
 import { AutocompleteParticipant } from '../../../components/AutocompleteParticipants'
 import { EvidenceForm } from './EvidenceForm'
-import { useRealtimeParticipantSancion } from '@/hooks/useRealtimeParticipantSancion'
-import { useSanctionEdit } from '@/hooks/useSanctionEdit'
+
+import Sanctions from '@/components/Sanctions'
+import { EVIDENCE } from '@/const'
 
 export default function Evidence() {
   const [participant, setParticipant] = useState<Participants | null>(null)
-  const [editSanctionStatus, loadingSanction] = useSanctionEdit()
-  const [sancion, loadingSancion, errorSancion] = useRealtimeParticipantSancion(
-    {
-      participantId: participant?.id ? String(participant?.id) : null,
-      isSingleRow: true,
-    }
-  )
+
   const searchParams = useSearchParams()
   const participantId = searchParams.get('participantId')
 
@@ -29,47 +22,16 @@ export default function Evidence() {
 
   return (
     <div className="flex flex-col gap-8 items-center justify-center h-full">
-      {sancion[0] && (
-        <Grow in={Boolean(sancion[0])}>
-          <div className="bg-purple-500/10 p-4 w-full flex justify-center items-center mb-10 rounded-lg">
-            <div className="w-72 flex justify-between items-center">
-              <div className="text-center flex flex-col border border-purple-400/10 p-2">
-                <strong className="text-4xl flex justify-center">
-                  {loadingSancion ? (
-                    <Skeleton variant="rectangular" width={35} height={40} />
-                  ) : (
-                    sancion[0].sanciontotal
-                  )}
-                </strong>
-                <small>Sanciones</small>
-              </div>
-              <div>
-                <Button
-                  variant="outlined"
-                  disabled={
-                    loadingSancion || sancion[0].sanciontotal === 0
-                      ? true
-                      : false
-                  }
-                  onClick={() =>
-                    editSanctionStatus({
-                      id: Number(sancion[0].id),
-                      status: E_FULFILLED,
-                    })
-                  }
-                >
-                  Cumplir sanciones
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Grow>
+      {participant?.id && (
+        <Sanctions participantId={participant?.id} type={EVIDENCE} />
       )}
-      <AutocompleteParticipant
-        participantId={participantId}
-        participant={participant}
-        onChange={handleAutocomplete}
-      />
+      <div className="min-w-[16rem]">
+        <AutocompleteParticipant
+          participantId={participantId}
+          participant={participant}
+          onChange={handleAutocomplete}
+        />
+      </div>
       {participant?.id && (
         <Grow in={Boolean(participant?.id)} className="w-full">
           <div>
