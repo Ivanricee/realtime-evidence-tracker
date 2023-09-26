@@ -10,14 +10,14 @@ const sancionDir: { [key: string]: string } = {
   1: '1 Sancion',
 }
 export default function ParticipantBadge({ participant }: Props) {
-  const { sanciontotal, totalfulfilled, name } = participant
+  const { evidencecount, evidencefullfilled, name } = participant
 
   return (
     <>
       <div className="w-full  mb-4">
         <div className="flex gap-2 items-center">
           <Tooltip title="Sanciones pendientes" placement="right-start">
-            <Badge badgeContent={sanciontotal} color="error">
+            <Badge badgeContent={evidencecount} color="error">
               <Avatar
                 alt="profile participant"
                 src={participant.imgProfile!}
@@ -26,7 +26,7 @@ export default function ParticipantBadge({ participant }: Props) {
             </Badge>
           </Tooltip>
           <div className="flex justify-center items-center text-blue-300 flex-wrap w-full">
-            <strong className="w-full text-center">{totalfulfilled}</strong>
+            <strong className="w-full text-center">{evidencefullfilled}</strong>
             <p className="text-sm flex "> Sanciones totales</p>
           </div>
         </div>
