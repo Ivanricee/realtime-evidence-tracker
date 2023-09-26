@@ -13,6 +13,7 @@ declare global {
     option: number
     isCorrect: boolean
   }
+  type financeType = Database['public']['Tables']['finance']['Row']
   type Sancion = Database['public']['Tables']['sancion']['Row']
   type participantEvidenceView =
     Database['public']['Views']['participantevidenceview']['Row']

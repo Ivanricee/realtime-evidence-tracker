@@ -52,26 +52,72 @@ export interface Database {
           },
         ]
       }
-      financialSanctions: {
+      finance: {
         Row: {
-          amount: number | null
+          bits: number | null
           created_at: string | null
+          fromParticipant: number
           id: number
-          type: string | null
+          status: string
+          subscription: number | null
+          toParticipant: number
         }
         Insert: {
-          amount?: number | null
+          bits?: number | null
           created_at?: string | null
+          fromParticipant: number
           id?: number
-          type?: string | null
+          status?: string
+          subscription?: number | null
+          toParticipant: number
         }
         Update: {
-          amount?: number | null
+          bits?: number | null
           created_at?: string | null
+          fromParticipant?: number
           id?: number
-          type?: string | null
+          status?: string
+          subscription?: number | null
+          toParticipant?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'finance_fromParticipant_fkey'
+            columns: ['fromParticipant']
+            referencedRelation: 'participants'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'finance_fromParticipant_fkey'
+            columns: ['fromParticipant']
+            referencedRelation: 'participantevidenceview'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'finance_fromParticipant_fkey'
+            columns: ['fromParticipant']
+            referencedRelation: 'participantsancionview'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'finance_toParticipant_fkey'
+            columns: ['toParticipant']
+            referencedRelation: 'participants'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'finance_toParticipant_fkey'
+            columns: ['toParticipant']
+            referencedRelation: 'participantevidenceview'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'finance_toParticipant_fkey'
+            columns: ['toParticipant']
+            referencedRelation: 'participantsancionview'
+            referencedColumns: ['id']
+          },
+        ]
       }
       participantQuiz: {
         Row: {
@@ -81,7 +127,7 @@ export interface Database {
           participant_id: number
           quiz_id: number
           status: string
-          time: number | null
+          time: number
         }
         Insert: {
           created_at?: string
@@ -90,7 +136,7 @@ export interface Database {
           participant_id: number
           quiz_id: number
           status?: string
-          time?: number | null
+          time: number
         }
         Update: {
           created_at?: string
@@ -99,7 +145,7 @@ export interface Database {
           participant_id?: number
           quiz_id?: number
           status?: string
-          time?: number | null
+          time?: number
         }
         Relationships: [
           {
@@ -247,28 +293,50 @@ export interface Database {
       }
       participantsancionview: {
         Row: {
+          evidencecount: number | null
+          evidencefullfilled: number | null
           id: number | null
           imgProfile: string | null
           name: string | null
-          sanciontotal: number | null
-          totalfulfilled: number | null
+          quizcount: number | null
+          quizfullfilled: number | null
         }
         Relationships: []
       }
       quizresults: {
         Row: {
-          answers: Json[] | null
+          answers: AnswerType[] | null
           created_at: string | null
           id: number | null
           imgProfile: string | null
           name: string | null
           participant_answer: string | null
+          participant_id: number | null
           question: string | null
-          remainingsec: number | null
+          secondsgone: number | null
           status: string | null
           time: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'participantQuiz_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participants'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'participantQuiz_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participantevidenceview'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'participantQuiz_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participantsancionview'
+            referencedColumns: ['id']
+          },
+        ]
       }
     }
     Functions: {
