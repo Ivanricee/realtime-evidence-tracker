@@ -69,6 +69,8 @@ export function Evidence() {
           <AlertToast
             alertToast={alertToast}
             resetAlertToast={resetAlertToast}
+            linkSrc={`/manage/evidence?participantId=${participantId}`}
+            linkTitle="aqui"
             width="6/6"
             closeBtn={false}
           />
