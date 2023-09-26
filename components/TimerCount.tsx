@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, Children } from 'react'
 import CircularProgress, {
   CircularProgressProps,
@@ -6,10 +7,10 @@ import CircularProgress, {
 type fnTimerCEndT = ({ timer }: { timer?: number }) => void
 type Props = {
   delay: number
+  stop?: boolean
   timeGone?: number
   onTimerEnd: fnTimerCEndT
   hasAnswers?: boolean
-  children?: React.ReactNode
 }
 
 function CircularProgressWithLabel(
@@ -28,55 +29,47 @@ function CircularProgressWithLabel(
 }
 export function TimerCount({
   delay,
+  stop = false,
   timeGone = 0,
   onTimerEnd,
   hasAnswers = false,
-  children,
 }: Props) {
   const remainingTime = delay - timeGone
   const [timer, setTimer] = useState(remainingTime)
-  console.log({ delay, timeGone, timer, timerFloor: Math.floor(timer) })
 
   useEffect(() => {
     let idInterval: number | null = null
-    if (Math.floor(timer) > 0) {
+    if (Math.floor(timer) > 0 && !stop) {
       idInterval = window.setInterval(() => {
-        setTimer((cTime) => cTime - 1)
+        idInterval !== null && setTimer((cTime) => cTime - 1)
       }, 1000)
     } else {
-      console.log('entra aqui al instante?', Math.floor(timer))
-
-      onTimerEnd({ timer: Math.floor(timer) })
+      if (Math.floor(timer) === 0 || idInterval !== null) {
+        onTimerEnd({ timer: Math.floor(timer) })
+        clearInterval(Number(idInterval))
+      }
     }
     return () => {
       idInterval !== null && clearInterval(idInterval)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timer])
   const percent = (100 / delay) * timer
   return (
-    <div className="flex w-full h-full items-center bg-orange-50/5 gap-4  py-4">
-      {children}
-
-      <div
-        className={`h-full flex flex-col justify-center items-center
-        ${hasAnswers ? 'w-2/6' : 'w-full'}`}
-      >
-        <CircularProgressWithLabel
-          value={percent}
-          label={Math.floor(timer)}
-          color="primary"
-          size={`${hasAnswers ? 'md' : 'xl'}`}
-        />
-        <h1
-          className={` text-emerald-100/40
+    <div className="flex flex-col w-full min-w-[15.5rem] h-full items-center  justify-center p-3">
+      <CircularProgressWithLabel
+        value={percent}
+        label={Math.floor(timer)}
+        color="primary"
+        size={`${hasAnswers ? 'md' : 'xl'}`}
+      />
+      <h1
+        className={` text-emerald-100/40
           ${hasAnswers ? 'text-base' : 'text-xl'}`}
-        >
-          {hasAnswers
-            ? '¡Tiempo en marcha, responde!'
-            : 'Esperando respuestas... tic-tac, tic-tac!'}
-        </h1>
-      </div>
+      >
+        {hasAnswers
+          ? '¡Tiempo en marcha, responde!'
+          : 'Esperando respuestas... tic-tac, tic-tac!'}
+      </h1>
     </div>
   )
 }
