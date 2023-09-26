@@ -4,6 +4,7 @@ import type { MessageStatus } from '@/types'
 export const STATUS_SUCCESS = '201'
 export const STATUS_ERROR = '404'
 export const EVIDENCE = 'evidence'
+export const QUIZ = 'quiz'
 export const PARTICIPANTS = 'participants'
 export const SELECT = Symbol()
 export const INSERT = Symbol()
