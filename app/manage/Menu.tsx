@@ -46,8 +46,8 @@ export function Menu() {
             <ListItemText primary="Preguntas" />
           </ListItemButton>
         </Link>
-        <Link href="/manage/financial">
-          <ListItemButton selected={pathname === '/manage/financial'}>
+        <Link href="/manage/finance">
+          <ListItemButton selected={pathname === '/manage/finance'}>
             <ListItemIcon className="min-w-0 pr-2 text-emerald-50/80">
               <PaidIcon />
             </ListItemIcon>
