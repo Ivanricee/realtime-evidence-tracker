@@ -24,3 +24,10 @@ export type quizData = {
   participants: Participants[]
   time: number
 }
+
+export type financeDataType = {
+  from: number
+  to: number[]
+  bits: number
+  subs: number
+}
