@@ -12,11 +12,13 @@ import { Toaster } from 'sonner'
 import { AlertToast } from './AlertToast'
 import { useAlertToast } from '@/hooks/useAlertToast'
 import { CircularProgress, Skeleton } from '@mui/material'
-import FormControl from '@mui/material/FormControl'
+
 type Props = {
   isMultiple?: boolean
   participantId?: string | null
   participant?: Participants | null
+  title?: string
+  participantIdFilter?: number | null
   onChange?: (itmSelected: Participants, action?: string) => void
 }
 type multipleSelect = {
@@ -27,6 +29,7 @@ type multipleSelect = {
 }
 type ChildHandle = {
   getOptionSelected: () => Participants[]
+  reset: () => void
 }
 
 const AutocompleteParticipant = forwardRef<ChildHandle, Props>(
@@ -35,17 +38,43 @@ const AutocompleteParticipant = forwardRef<ChildHandle, Props>(
       isMultiple = false,
       participantId = null, // initate value:{}
       participant = null, //needed when participantId exist for init value:{}.
+      title = '',
+      participantIdFilter = null,
       onChange,
     },
     ref
   ) => {
     const [alertToast, openAlertToast, resetAlertToast] = useAlertToast()
     const [participants, loading, error] = useParticipants()
+    const [filterParticipant, setFilterParticipant] = useState<
+      Participants[] | null
+    >(null)
     const [selectedParticipantsState, setSelectedParticipantsState] = useState<
       Participants[] | []
     >([])
 
     //-------- multiple item
+    // ------ filter participant list if filter
+    useEffect(() => {
+      if (participantIdFilter) {
+        //filter data in autocomplete
+        const filter = participants.filter((participItm) => {
+          return participItm.id !== participantIdFilter
+        })
+        //filter data in ui autocomplete
+        const filterSelected = selectedParticipantsState.filter(
+          (participSelectItm) => {
+            return participSelectItm.id !== participantIdFilter
+          }
+        )
+        selectedParticipantsState.length > 0 &&
+          setSelectedParticipantsState([...filterSelected])
+
+        setFilterParticipant([...filter])
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [participantIdFilter])
+
     const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
     const checkedIcon = <CheckBoxIcon fontSize="small" />
 
@@ -57,8 +86,10 @@ const AutocompleteParticipant = forwardRef<ChildHandle, Props>(
     }: multipleSelect) => {
       setSelectedParticipantsState([...selectedParticipants])
     }
+    //filterParticipant
     const multipleProps = {
       multiple: true,
+      value: selectedParticipantsState,
       limitTags: 3,
       disableCloseOnSelect: true,
       sx: { width: '100%', paddingBottom: '2rem' },
@@ -113,7 +144,6 @@ const AutocompleteParticipant = forwardRef<ChildHandle, Props>(
 
     const singleProps = {
       value: participant,
-      sx: { width: 300 },
       onChange: (event: React.ChangeEvent<{}>, value: any) =>
         handleSingleItem(String(value?.id)),
     }
@@ -122,6 +152,7 @@ const AutocompleteParticipant = forwardRef<ChildHandle, Props>(
       ref,
       () => ({
         getOptionSelected: () => selectedParticipantsState,
+        reset: () => setSelectedParticipantsState([]),
       }),
       [selectedParticipantsState]
     )
@@ -143,12 +174,6 @@ const AutocompleteParticipant = forwardRef<ChildHandle, Props>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [participants, loading])
 
-    /*if (loading)
-      return (
-        <div className=" w-full">
-          <Skeleton variant="text" className="w-full h-20" />
-        </div>
-      )*/
     if (alertToast.isOpen)
       return (
         <>
@@ -161,28 +186,30 @@ const AutocompleteParticipant = forwardRef<ChildHandle, Props>(
           </div>
         </>
       )
+    const defaultLabel = isMultiple
+      ? 'Selecciona uno o varios participantes'
+      : 'Selecciona un participante'
+    let labelName = title !== '' ? title : defaultLabel
     return (
       <>
         <Autocomplete
           {...propsSelect}
-          className="min-w-[350px]"
+          className="min-w-[200px] w-full"
           disablePortal
           id="participant menu"
           autoComplete
           autoHighlight
           openOnFocus
-          options={participants}
+          options={
+            filterParticipant !== null ? filterParticipant : participants
+          }
           getOptionLabel={(option) => (option?.name ? option?.name : '')}
           isOptionEqualToValue={(option, value) => option?.id === value?.id}
           renderInput={(params) => (
             <TextField
               {...params}
               required={selectedParticipantsState.length === 0}
-              label={
-                isMultiple
-                  ? 'Selecciona uno o varios participantes'
-                  : 'Selecciona un participante'
-              }
+              label={labelName}
               InputProps={{
                 ...params.InputProps,
                 endAdornment: (
