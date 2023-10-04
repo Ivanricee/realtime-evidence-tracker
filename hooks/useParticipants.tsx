@@ -1,26 +1,43 @@
 import { getParticipants } from '@/app/actions/participantActions'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useEffect, useState } from 'react'
+import useSWR, { mutate } from 'swr'
 
 type response = [Participants[], boolean, SupabaseError | null]
 
+const fetcher = async () => {
+  const response = await getParticipants()
+  if (response[0]?.data === null) {
+    throw new Error('failed to fetch participants')
+  }
+  return response
+}
 export function useParticipants(): response {
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<SupabaseError | null>(null)
-  const [participants, setParticipants] = useState<Participants[] | []>([])
+  const supabase = createClientComponentClient<Database>()
+  const { data: participants, error } = useSWR<Participants[]>(
+    'participants-key',
+    fetcher
+  )
 
   useEffect(() => {
-    const participants = async () => {
-      const response = await getParticipants()
-      if (response[0]?.data === null) {
-        setError(response[0])
-      } else {
-        setParticipants(response)
-      }
-      setLoading(false)
+    const channel = supabase
+      .channel('participants')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'participants',
+        },
+        (payload) => {
+          mutate('participants-key')
+        }
+      )
+      .subscribe()
+    return () => {
+      supabase.removeChannel(channel)
     }
-    participants()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  return [participants, loading, error]
+  }, [supabase])
+  return [participants || [], !error && !participants, error]
 }
