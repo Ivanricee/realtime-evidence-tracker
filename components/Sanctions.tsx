@@ -42,7 +42,7 @@ export default function Sanctions({ participantId, type }: Props) {
     <>
       {sancion[0] && (
         <Grow in={Boolean(sancion[0])}>
-          <div className="bg-purple-500/10 p-4 w-full flex justify-center items-center mb-10 rounded-lg">
+          <div className="bg-purple-100/10 p-4 w-full flex justify-center items-center mb-10 rounded-lg">
             <div className="w-72 flex justify-between items-center">
               <div className="text-center flex flex-col border border-purple-400/10 p-2">
                 <strong className="text-4xl flex justify-center">
