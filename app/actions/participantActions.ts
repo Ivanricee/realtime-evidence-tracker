@@ -8,7 +8,10 @@ type Props = {
 export const getParticipants = async () => {
   const supabase = createServerActionClient({ cookies })
   try {
-    const { data, error } = await supabase.from('participants').select()
+    const { data, error } = await supabase
+      .from('participants')
+      .select()
+      .order('name', { ascending: true })
     if (error) {
       return [{ data: null, status: 404 }]
     }
