@@ -17,10 +17,16 @@ export default function Finance() {
     null
   )
   const [transactionError, setTransactionError] = useState(false)
+  const [bits, setBits] = useState('')
+  const [subs, setSubs] = useState('')
 
   const handleAutocomplete = (participant: Participants) => {
     if (participant) setParticipantFrom({ ...participant })
   }
+  const handleBits = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setBits(event.target.value)
+  const handleSubs = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setSubs(event.target.value)
 
   const submitAddQuiz = async (formData: FormData) => {
     const partSelected = autocompleteRef.current?.getOptionSelected()
@@ -57,6 +63,9 @@ export default function Finance() {
       }
     }
   }
+  const isBitsDisable = subs.length !== 0
+  const isSubsDisable = bits.length !== 0
+
   return (
     <article
       className="rounded-xl shadow-2xl  h-full gap-4 box-border w-full
@@ -86,6 +95,9 @@ export default function Finance() {
             </div>
           </div>
           <TextField
+            value={bits}
+            onChange={handleBits}
+            disabled={isBitsDisable}
             className="w-1/4 min-w-[13rem]"
             defaultValue={''}
             margin="dense"
@@ -104,6 +116,9 @@ export default function Finance() {
             <Chip label="ó" />{' '}
           </Divider>
           <TextField
+            value={subs}
+            onChange={handleSubs}
+            disabled={isSubsDisable}
             className="w-1/4 min-w-[13rem]"
             defaultValue={''}
             margin="dense"
