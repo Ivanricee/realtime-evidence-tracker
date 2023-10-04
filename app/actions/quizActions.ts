@@ -51,11 +51,6 @@ export const editParticipantQuizAction = async ({
       //200
       const { data, status } = result
       if (status === 204) {
-        console.log(
-          '2--------------------------------------------es correcto ',
-          status
-        )
-
         return [{ data, status }]
       }
       return [{ data: null, status: 404 }]
