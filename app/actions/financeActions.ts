@@ -35,15 +35,44 @@ type getFinanceT = {
 export const getFinance = async ({ participantId }: getFinanceT) => {
   const supabase = createServerActionClient({ cookies })
   try {
-    const response = await supabase.rpc('query', {
-      sql: `
-        SELECT * FROM finance
-        UNION ALL
-        SELECT * FROM participants
-      `,
-    })
+    const { data, error } = await supabase
+      .from('finance')
+      .select('*')
+      .or(
+        `fromParticipant.eq.${participantId},toParticipant.eq.${participantId}`
+      )
+
+    if (error) {
+      return [{ data: null, status: 404 }]
+    }
+    return data
   } catch (error) {
-    console.log('error de conexión', error)
-    return { data: null, status: 404 }
+    console.log('error de conexion ', error)
+
+    return [{ data: null, status: 404 }]
+  }
+}
+type editType = { id: number; status: string }
+export const editFinanceServer = async ({ id, status }: editType) => {
+  const supabase = createServerActionClient({ cookies })
+  try {
+    const result = await supabase
+      .from('finance')
+      .update({ status })
+      .eq('id', id)
+
+    if (result.error) {
+      return [{ data: null, status: 404 }]
+    } else {
+      //200
+      const { data, status } = result
+      if (status === 204) {
+        return [{ data, status }]
+      }
+      return [{ data: null, status: 404 }]
+    }
+  } catch (error) {
+    console.log('error al editar finance fuera de tiempo', error)
+    return [{ data: null, status: 404 }]
   }
 }
