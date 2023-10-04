@@ -6,6 +6,7 @@ export const STATUS_ERROR = '404'
 export const EVIDENCE = 'evidence'
 export const QUIZ = 'quiz'
 export const PARTICIPANTS = 'participants'
+export const FINANCE = 'finance'
 export const SELECT = Symbol()
 export const INSERT = Symbol()
 export const UPDATE = Symbol()
@@ -54,6 +55,18 @@ export const DATABASE_STATUS = {
       },
     },
   },
+  [FINANCE]: {
+    [SELECT]: {
+      [NO_DATA]: {
+        message: 'No se encontraron deudas en la búsqueda realizada',
+        connectionStatus: 'info',
+      },
+      [STATUS_ERROR]: {
+        message: 'Ocurrio un error al obtener deudas, intenta mas tarde',
+        connectionStatus: 'error',
+      },
+    },
+  },
 } as MessageStatus
 
 //-- menu dasboard
@@ -72,3 +85,9 @@ export const E_PENDING = 'pending'
 export const E_ACCEPTED = 'accepted'
 export const E_REJECTED = 'rejected'
 export const E_FULFILLED = 'fulfilled'
+
+//finance
+
+export const F_PENDING = 'pending'
+export const F_INREVIEW = 'inReview'
+export const F_COMPLETED = 'completed'
