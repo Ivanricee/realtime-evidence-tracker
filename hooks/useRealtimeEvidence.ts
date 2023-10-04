@@ -9,8 +9,10 @@ export function useRealtimeEvidence(): response {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<SupabaseError | null>(null)
   const supabase = createClientComponentClient()
-  const { participant: participantId } = useParams()
-
+  const { participant } = useParams()
+  const participantId = Array.isArray(participant)
+    ? participant[0]
+    : participant
   useEffect(() => {
     const getEvidenceRes = async () => {
       const evidence = await getEvidence({ participantId })

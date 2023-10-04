@@ -8,8 +8,10 @@ type response = [participantEvidenceView[], boolean, SupabaseError | null]
 
 export function useRealtimeParticipantEvidence(): response {
   const supabase = createClientComponentClient<Database>()
-  const { participant: participantId } = useParams()
-
+  const { participant } = useParams()
+  const participantId = Array.isArray(participant)
+    ? participant[0]
+    : participant
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<SupabaseError | null>(null)
   const [particEvidence, setParticEvidence] = useState<
