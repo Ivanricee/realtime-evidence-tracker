@@ -4,16 +4,16 @@ export default function EvidenceSkeleton() {
     <>
       <Paper
         elevation={12}
-        className="rounded-xl flex flex-col h-4/6 gap-4 p-4
+        className="w-full rounded-xl flex flex-col h-4/6 gap-4 p-4
   bg-transparent bg-gradient-to-t from-zinc-800/30 from-20% ... to-65%"
       >
-        <div className="flex flex-col h-full">
+        <div className="w-full flex flex-col h-full">
           <Skeleton variant="rounded" className="w-full h-full" />
         </div>
       </Paper>
       <Paper
         elevation={12}
-        className="rounded-xl h-2/6 flex gap-6
+        className="w-full rounded-xl h-2/6 flex gap-6
   bg-transparent bg-gradient-to-t from-zinc-800/30 from-30% ... to-70%"
       >
         <div className="flex flex-col w-2/12">
