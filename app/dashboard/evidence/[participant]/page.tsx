@@ -1,7 +1,6 @@
 'use client'
 import TabPanel from '@/components/TabPanel'
 import { Evidence } from './Evidence/Evidence'
-import { Metadata } from 'next'
 
 type Prop = {
   params: { participant: string }
