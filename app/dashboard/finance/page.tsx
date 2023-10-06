@@ -68,8 +68,8 @@ export default function Finance() {
 
   return (
     <article
-      className="rounded-xl shadow-2xl  h-full gap-4 box-border w-full
-        bg-transparent bg-gradient-to-t from-zinc-800/20 from-20% to-65% overflow-hidden"
+      className="h-full w-full flex flex-col items-center rounded-xl shadow-2xl py-14 px-14
+        bg-transparent bg-gradient-to-t from-zinc-800/20 from-20% to-65% overflow-auto  "
     >
       <div className="overflow-auto flex flex-col items-center h-full py-14 px-14">
         <form
