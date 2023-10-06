@@ -24,12 +24,13 @@ type cardProps = {
 }
 function Card({ children }: cardProps) {
   return (
-    <section
+    <article
       aria-label="user data edition and media"
-      className="h-full w-full flex flex-col justify-center gap-4 "
+      className="h-full w-full flex flex-col items-center rounded-xl shadow-2xl py-10 px-10 pb-4 gap-4
+      overflow-auto "
     >
       {children}
-    </section>
+    </article>
   )
 }
 export function Evidence() {
@@ -65,16 +66,14 @@ export function Evidence() {
   if (alertToast.isOpen)
     return (
       <Card>
-        <div className="flex justify-center px-6 mt-6">
-          <AlertToast
-            alertToast={alertToast}
-            resetAlertToast={resetAlertToast}
-            linkSrc={`/manage/evidence?participantId=${participantId}`}
-            linkTitle="aqui"
-            width="6/6"
-            closeBtn={false}
-          />
-        </div>
+        <AlertToast
+          alertToast={alertToast}
+          resetAlertToast={resetAlertToast}
+          linkSrc={`/manage/evidence?participantId=${participantId}`}
+          linkTitle="aqui"
+          width="6/6"
+          closeBtn={false}
+        />
       </Card>
     )
   if (loading)
@@ -87,7 +86,7 @@ export function Evidence() {
     <Card>
       <Paper
         elevation={12}
-        className="rounded-xl flex flex-col h-4/6 gap-4 p-4 bg-transparent bg-gradient-to-t from-zinc-800/30 from-20% to-65%"
+        className="w-full rounded-xl h-4/6 flex p-4 bg-transparent bg-gradient-to-t from-zinc-800/30 from-20% to-65%"
       >
         <div className="h-full bg-black/60 bg-opacity-80 rounded-lg w-full flex justify-center items-center overflow-hidden">
           {media.url !== '' ? (
@@ -101,7 +100,7 @@ export function Evidence() {
       </Paper>
       <Paper
         elevation={12}
-        className="rounded-xl h-2/6 flex bg-transparent bg-gradient-to-t from-zinc-800/30 from-30% to-70%"
+        className="w-full rounded-xl max-h-[250px] h-2/6 flex bg-transparent bg-gradient-to-t from-zinc-800/30 from-30%  to-95%"
       >
         <Tabs
           orientation="vertical"
@@ -112,10 +111,23 @@ export function Evidence() {
           onChange={handleChange}
           aria-label="evidence"
           sx={{ borderRight: 2, borderColor: 'divider', textAlign: 'left' }}
+          className="w-1/3 min-w-[70px]"
         >
-          <Tab label="pendientes" {...a11yProps(0)} />
-          <Tab label="Aceptados" {...a11yProps(1)} />
-          <Tab label="Rechazados" {...a11yProps(2)} />
+          <Tab
+            className="text-xs py-0 min-h-[40px] "
+            label="pendientes"
+            {...a11yProps(0)}
+          />
+          <Tab
+            className="text-xs py-0 min-h-[40px]"
+            label="Aceptados"
+            {...a11yProps(1)}
+          />
+          <Tab
+            className="text-xs py-0 min-h-[40px]"
+            label="Rechazados"
+            {...a11yProps(2)}
+          />
           <div className="w-full text-center ">
             <Fab
               size="small"
@@ -127,7 +139,6 @@ export function Evidence() {
             >
               <AddIcon />
             </Fab>
-            <h3 className="text-gray-500 text-xs pt-2"> </h3>
           </div>
         </Tabs>
         <TabPanel isVertical value={value} index={0}>
