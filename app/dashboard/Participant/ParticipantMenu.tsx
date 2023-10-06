@@ -7,23 +7,17 @@ import { useAlertToast } from '@/hooks/useAlertToast'
 import { AlertToast } from '@/components/AlertToast'
 import { NO_DATA, PARTICIPANTS, SELECT } from '@/const'
 import { useEffect } from 'react'
-import ParticipantStats from '@/components/ParticipantStats/Index'
 import { ParticipantMenuItem } from './ParticipantMenuItem'
 
-type Props = {
-  expand: boolean
-}
 type Card = {
-  expand: boolean
   children: React.ReactNode
 }
-function Card({ expand, children }: Card) {
+function Card({ children }: Card) {
   return (
     <Paper
-      elevation={24}
-      className={`w-full rounded-xl overflow-y-auto
-  bg-transparent bg-gradient-to-t from-zinc-800/20 from-15% ... to-50%
-  ${expand ? 'h-full xl:w-7/12' : 'h-1/2 xl:h-full'}`}
+      elevation={12}
+      className={`w-full rounded-xl overflow-y-auto bg-transparent
+      bg-gradient-to-t from-zinc-800/20 from-15% ... to-50%`}
     >
       {children}
     </Paper>
@@ -53,7 +47,7 @@ function SkeletonList() {
     </div>
   )
 }
-export default function ParticipantMenu({ expand = false }: Props) {
+export default function ParticipantMenu() {
   const { participant: participantId } = useParams()
   const [alertToast, openAlertToast, resetAlertToast] = useAlertToast()
   const [particEvidence, loading, error] = useRealtimeParticipantEvidence()
@@ -77,14 +71,14 @@ export default function ParticipantMenu({ expand = false }: Props) {
 
   if (loading)
     return (
-      <Card expand>
+      <Card>
         <SkeletonList />
       </Card>
     )
   //error/empty data
   if (alertToast.isOpen)
     return (
-      <Card expand>
+      <Card>
         <div className="flex justify-center px-6 mt-6">
           <AlertToast
             alertToast={alertToast}
@@ -97,8 +91,8 @@ export default function ParticipantMenu({ expand = false }: Props) {
 
   return (
     <>
-      {participantId && <ParticipantStats />}
-      <Card expand>
+      {/*participantId && <ParticipantStats />*/}
+      <Card>
         <h1 className="text-purple-300/60 text-center py-6 pb-2 text-2xl">
           Participantes
         </h1>
