@@ -5,7 +5,7 @@ type Props = {
 }
 export default function ManageLayout({ children }: Props) {
   return (
-    <section className="container mx-auto flex w-full h-full gap-4 items-center justify-center ">
+    <section className="container mx-auto h-full max-w-[1024px] flex w-full  gap-4 items-center justify-center ">
       <article className="w-3/12">
         <Menu />
       </article>
