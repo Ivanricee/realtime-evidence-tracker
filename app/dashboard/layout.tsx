@@ -6,18 +6,19 @@ type Props = {
 }
 export default async function DashboardLayout({ children }: Props) {
   return (
-    <section className="h-full ">
-      <section className="flex gap-4 h-full relative z-10">
-        <section
-          aria-label="evidence list"
-          className="h-full w-4/12 flex gap-4 items-center flex-col xl:flex-row-reverse xl:w-5/12"
-        >
-          <ParticipantMenu expand />
-        </section>
-        <div className="w-8/12 xl:w-7/12 rounded-lg">
-          <SecondaryMenu>{children}</SecondaryMenu>
-        </div>
+    <div className="h-full container mx-auto max-w-[1280px] flex gap-4  relative z-10">
+      <section
+        aria-label="participants"
+        className="h-full w-4/12 flex gap-4 items-center flex-col lg:w-3/12"
+      >
+        <ParticipantMenu />
       </section>
-    </section>
+      <section
+        aria-label="option menu"
+        className="w-8/12 xl:w-8/12 rounded-lg lg:w-9/12"
+      >
+        <SecondaryMenu>{children}</SecondaryMenu>
+      </section>
+    </div>
   )
 }
