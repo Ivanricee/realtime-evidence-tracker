@@ -44,7 +44,10 @@ function SkeletonList() {
   )
 }
 export default function ParticipantStats() {
-  const { participant: participantId } = useParams()
+  const { participant } = useParams()
+  const participantId = Array.isArray(participant)
+    ? participant[0]
+    : participant
   const [particSancion, loading, error] = useRealtimeParticipantSancion({
     participantId,
   })
