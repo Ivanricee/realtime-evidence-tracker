@@ -21,7 +21,7 @@ export default function Evidence() {
   }
 
   return (
-    <div className="flex flex-col gap-8 items-center justify-center h-full">
+    <div className="flex flex-col gap-8 items-center justify-center h-full px-16">
       {participant?.id && (
         <Sanctions participantId={participant?.id} type={EVIDENCE} />
       )}
