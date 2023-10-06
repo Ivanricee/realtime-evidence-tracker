@@ -15,6 +15,7 @@ import {
 } from '@/const'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import { Paper } from '@mui/material'
 
 type Props = {
   children: React.ReactNode
@@ -33,28 +34,34 @@ export default function SecondaryMenu({ children }: Props) {
   if (pathname.startsWith('/dashboard/finance')) menuTabValue = 2
 
   return (
-    <section aria-label="Evidence" className="w-full h-full flex flex-col">
-      <BottomNavigation
-        className="w-full rounded-lg bg-opacity-5 bg-transparent bg-gradient-to-r from-violet-300/10 from-10% ... to-90%"
-        showLabels
-        value={menuTabValue}
+    <div className="w-full h-full flex flex-col">
+      <Paper
+        elevation={12}
+        aria-label="secondary menu"
+        className={`bg-transparent rounded-lg pb-4 mx-4 overflow-hidden min-h-[70px]
+        bg-gradient-to-t from-zinc-800/20 from-10%  to-90%`}
       >
-        {DASHBOARD_MENU.map((menu, index) => {
-          const { url, icon } = MENU_HREF[menu]
-          return (
-            <BottomNavigationAction
-              key={menu}
-              label={menu}
-              href={url}
-              component={Link}
-              icon={icon}
-              color="secondary"
-            />
-          )
-        })}
-      </BottomNavigation>
-
-      <div className="h-full">{children}</div>
-    </section>
+        <BottomNavigation
+          showLabels
+          value={menuTabValue}
+          className="bg-transparent"
+        >
+          {DASHBOARD_MENU.map((menu, index) => {
+            const { url, icon } = MENU_HREF[menu]
+            return (
+              <BottomNavigationAction
+                key={menu}
+                label={menu}
+                href={url}
+                component={Link}
+                icon={icon}
+                color="secondary"
+              />
+            )
+          })}
+        </BottomNavigation>
+      </Paper>
+      {children}
+    </div>
   )
 }

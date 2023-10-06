@@ -88,75 +88,74 @@ export default function Quiz() {
   const showResult = results.show
 
   return (
-    <div
-      className="rounded-xl shadow-2xl  h-full gap-4 box-border w-full
-      bg-transparent bg-gradient-to-t from-zinc-800/20 from-20% to-65% overflow-hidden"
+    <article
+      className="h-full w-full flex flex-col items-center rounded-xl shadow-2xl py-14 px-14
+      bg-transparent bg-gradient-to-t from-zinc-800/20 from-20% to-65% overflow-auto  "
     >
-      <div className="overflow-auto flex flex-col items-center h-full py-14 px-14">
-        {showTimer && (
-          <TimerCount delay={results.delay} onTimerEnd={handleResult} />
-        )}
-        {showResult && (
-          <>
-            <Button
-              variant="outlined"
-              className="mb-8"
-              onClick={() => setResults(initResults)}
-            >
-              Nueva pregunta
-            </Button>
-
-            <QuizResult participant={results.participantQuiz} />
-          </>
-        )}
-        {showForm && (
-          <form
-            ref={formRef}
-            action={submitAddQuiz}
-            className="w-full flex flex-col"
+      {showTimer && (
+        <TimerCount delay={results.delay} onTimerEnd={handleResult} />
+      )}
+      {showResult && (
+        <>
+          <Button
+            variant="outlined"
+            className="mb-8"
+            onClick={() => setResults(initResults)}
           >
-            <AutocompleteParticipant ref={autocompleteRef} isMultiple />
-            <TextField
-              autoFocus
-              defaultValue={''}
-              margin="dense"
-              id="quiz"
-              name="quiz"
-              label="Escribe una pregunta"
-              type="text"
-              color="primary"
-              fullWidth
-              variant="outlined"
-              required
-            />
-            <div className="text-center">
-              <DynamicInputs ref={inputsRef} title="Agregar respuesta" />
-            </div>
-            <div className="mt-6 flex justify-center">
-              <FormControl required className="min-w-[200px] w-1/2">
-                <InputLabel id="delay">Tiempo para contestar</InputLabel>
-                <Select
-                  labelId="delay"
-                  id="delay"
-                  value={delay}
-                  label="Tiempo para contestar"
-                  onChange={handleSelectedDelay}
-                >
-                  <MenuItem value={30}>
-                    <em>30 segundos</em>
-                  </MenuItem>
-                  <MenuItem value={60}>60 segundos</MenuItem>
-                  <MenuItem value={90}>90 segundos</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <div className="text-center pt-6">
-              <Submit description="Crear Pregunta" />
-            </div>
-          </form>
-        )}
-      </div>
+            Nueva pregunta
+          </Button>
+
+          <QuizResult participant={results.participantQuiz} />
+        </>
+      )}
+      {showForm && (
+        <form
+          ref={formRef}
+          action={submitAddQuiz}
+          className="w-full flex flex-col"
+        >
+          <AutocompleteParticipant ref={autocompleteRef} isMultiple />
+          <TextField
+            autoFocus
+            defaultValue={''}
+            margin="dense"
+            id="quiz"
+            name="quiz"
+            label="Escribe una pregunta"
+            type="text"
+            color="primary"
+            fullWidth
+            variant="outlined"
+            required
+          />
+          <div className="text-center">
+            <DynamicInputs ref={inputsRef} title="Agregar respuesta" />
+          </div>
+          <div className="mt-6 flex justify-center">
+            <FormControl required className="min-w-[200px] w-1/2">
+              <InputLabel id="delay">Tiempo para contestar</InputLabel>
+              <Select
+                labelId="delay"
+                id="delay"
+                value={delay}
+                label="Tiempo para contestar"
+                onChange={handleSelectedDelay}
+              >
+                <MenuItem value={30}>
+                  <em>30 segundos</em>
+                </MenuItem>
+                <MenuItem value={60}>60 segundos</MenuItem>
+                <MenuItem value={90}>90 segundos</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <div className="text-center pt-6">
+            <Submit description="Crear Pregunta" />
+          </div>
+        </form>
+      )}
+
       <Toaster position="bottom-left" richColors closeButton />
-    </div>
+    </article>
   )
 }
