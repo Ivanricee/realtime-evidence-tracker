@@ -17,6 +17,8 @@ declare global {
   type Sancion = Database['public']['Tables']['sancion']['Row']
   type participantEvidenceView =
     Database['public']['Views']['participantevidenceview']['Row']
+  type participantStats =
+    Database['public']['Views']['participant_stats']['Row']
   type participantsancionview =
     Database['public']['Views']['participantsancionview']['Row']
   type pendingSancionView =
