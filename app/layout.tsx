@@ -4,11 +4,11 @@ export const metadata = {
   title: 'Evidence tracker',
   description: 'App for tracking users evidence',
 }
-/*
-body:before {
+
+/*body:before {
 background: none;
-}
-*/
+}*/
+
 export default function RootLayout({
   children,
 }: {
@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="bg-none" id="__next">
+      <body className="bg-transparent " id="__next">
         <main className="w-full h-screen bg-cover p-6 overflow-hidden  min-h-[600px] relative">
           <div
             className="absolute aspect-video h-60 bg-green-500 blur-3xl bg-opacity-10
