@@ -10,7 +10,8 @@ const getUrl = ({ url }: Props) => {
   let urlRes: TypeUrlRes = { type: null, url: '' }
   const isTwitchClipRegex = /clip/
   if (isTwitchClipRegex.test(url)) {
-    const urlTwitchClipRegex = /[^/]*$/
+    //after twitch url & before query param
+    const urlTwitchClipRegex = /(?<=\/)[^/?]*(?=\?|$)/
     const urlTwitch = url.match(urlTwitchClipRegex)
     urlRes = {
       type: 'clip',
@@ -19,6 +20,7 @@ const getUrl = ({ url }: Props) => {
   }
   return urlRes
 }
+
 export function PlayMedia({ url }: Props) {
   const media = getUrl({ url })
 
