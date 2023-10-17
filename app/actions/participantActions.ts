@@ -1,6 +1,5 @@
 'use server'
 import { createServerActionClient } from '@supabase/auth-helpers-nextjs'
-import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 type Props = {
   participantId: string | null
@@ -21,7 +20,20 @@ export const getParticipants = async () => {
     return [{ data: null, status: 404 }]
   }
 }
+export const getParticipantStats = async () => {
+  const supabase = createServerActionClient({ cookies })
+  try {
+    const { data, error } = await supabase.from('participant_stats').select()
 
+    if (error) {
+      return [{ data: null, status: 404 }]
+    }
+    return data
+  } catch (error) {
+    console.log('error de conexion ', error)
+    return [{ data: null, status: 404 }]
+  }
+}
 export const getParticipantsById = async ({ participantId }: Props) => {
   const supabase = createServerActionClient({ cookies })
 
