@@ -41,6 +41,12 @@ export interface Database {
           {
             foreignKeyName: 'evidence_participant_id_fkey'
             columns: ['participant_id']
+            referencedRelation: 'participant_stats'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'evidence_participant_id_fkey'
+            columns: ['participant_id']
             referencedRelation: 'participantevidenceview'
             referencedColumns: ['id']
           },
@@ -90,6 +96,12 @@ export interface Database {
           {
             foreignKeyName: 'finance_fromParticipant_fkey'
             columns: ['fromParticipant']
+            referencedRelation: 'participant_stats'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'finance_fromParticipant_fkey'
+            columns: ['fromParticipant']
             referencedRelation: 'participantevidenceview'
             referencedColumns: ['id']
           },
@@ -103,6 +115,12 @@ export interface Database {
             foreignKeyName: 'finance_toParticipant_fkey'
             columns: ['toParticipant']
             referencedRelation: 'participants'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'finance_toParticipant_fkey'
+            columns: ['toParticipant']
+            referencedRelation: 'participant_stats'
             referencedColumns: ['id']
           },
           {
@@ -152,6 +170,12 @@ export interface Database {
             foreignKeyName: 'participantQuiz_participant_id_fkey'
             columns: ['participant_id']
             referencedRelation: 'participants'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'participantQuiz_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participant_stats'
             referencedColumns: ['id']
           },
           {
@@ -257,6 +281,12 @@ export interface Database {
           {
             foreignKeyName: 'sancion_participant_id_fkey'
             columns: ['participant_id']
+            referencedRelation: 'participant_stats'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'sancion_participant_id_fkey'
+            columns: ['participant_id']
             referencedRelation: 'participantevidenceview'
             referencedColumns: ['id']
           },
@@ -282,6 +312,20 @@ export interface Database {
       }
     }
     Views: {
+      participant_stats: {
+        Row: {
+          bits: number | null
+          fulfilled_evidence: number | null
+          fulfilled_quiz: number | null
+          id: number | null
+          imgProfile: string | null
+          name: string | null
+          pending_evidence: number | null
+          pending_quiz: number | null
+          subs: number | null
+        }
+        Relationships: []
+      }
       participantevidenceview: {
         Row: {
           id: number | null
@@ -322,6 +366,12 @@ export interface Database {
             foreignKeyName: 'participantQuiz_participant_id_fkey'
             columns: ['participant_id']
             referencedRelation: 'participants'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'participantQuiz_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participant_stats'
             referencedColumns: ['id']
           },
           {
