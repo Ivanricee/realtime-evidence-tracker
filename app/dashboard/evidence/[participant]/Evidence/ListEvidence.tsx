@@ -101,14 +101,14 @@ export function ListEvidence({ evidences, status, handleViewer }: Props) {
         {title[status]}
       </h1>
       <List
-        component="nav"
+        component="ul"
         aria-label="secondary mailbox folder"
         className="w-full pb-4"
       >
         {evidenceFilter.map((evidence) => {
           const isSelected = selectedItm.id === evidence.id
           return (
-            <div key={evidence.id}>
+            <>
               <ListItem disablePadding className="rounded-md overflow-hidden">
                 <ListItemButton
                   selected={isSelected}
@@ -159,7 +159,7 @@ export function ListEvidence({ evidences, status, handleViewer }: Props) {
                 </Fade>
               </ListItem>
               <Divider component="li" />
-            </div>
+            </>
           )
         })}
       </List>
