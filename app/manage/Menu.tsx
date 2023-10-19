@@ -25,11 +25,7 @@ export function Menu() {
       className={`w-full rounded-xl overflow-y-auto py-4 flex  items-center text-emerald-50/80
       bg-transparent bg-gradient-to-b from-zinc-800/50 from-35%  to-90%`}
     >
-      <List
-        component="nav"
-        aria-label="main mailbox folders"
-        className="w-full"
-      >
+      <List component="nav" aria-label="main menu actions" className="w-full">
         <Link href="/manage/evidence">
           <ListItemButton selected={pathname === '/manage/evidence'}>
             <ListItemIcon className="min-w-0 pr-2 text-emerald-50/80">

@@ -100,11 +100,7 @@ export function ListEvidence({ evidences, status, handleViewer }: Props) {
       <h1 className="text-center text-lg text-purple-100 mb-4">
         {title[status]}
       </h1>
-      <List
-        component="ul"
-        aria-label="secondary mailbox folder"
-        className="w-full pb-4"
-      >
+      <List component="ul" aria-label="evidence menu " className="w-full pb-4">
         {evidenceFilter.map((evidence) => {
           const isSelected = selectedItm.id === evidence.id
           return (
