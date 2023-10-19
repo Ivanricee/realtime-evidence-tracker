@@ -13,10 +13,19 @@ const globalTheme = createTheme({
   palette: {},
 }) //as ExtendedTheme
 export const darkTheme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+    },
+  },
   palette: {
     mode: 'dark',
     background: {
-      default: '#161617',
+      default: '#000',
       paper: '#1E2123',
     },
     text: {
