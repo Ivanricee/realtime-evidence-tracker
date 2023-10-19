@@ -26,7 +26,7 @@ function Card({ children }: cardProps) {
   return (
     <article
       aria-label="user data edition and media"
-      className="h-full w-full flex flex-col items-center rounded-xl shadow-2xl py-10 px-10 pb-4 gap-4
+      className="h-full w-full flex flex-col items-center rounded-xl shadow-2xl p-2 md:p-10 pb-4 gap-4
       overflow-auto "
     >
       {children}
