@@ -18,7 +18,7 @@ export default async function DashboardLayout({ children }: Props) {
       </section>
       <section
         aria-label="option menu"
-        className="w-full md:w-8/12 xl:w-8/12 rounded-lg lg:w-9/12"
+        className="w-full h-full md:w-8/12 xl:w-8/12 rounded-lg lg:w-9/12"
       >
         <SecondaryMenu>{children}</SecondaryMenu>
       </section>
