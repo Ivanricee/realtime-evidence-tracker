@@ -110,6 +110,7 @@ export function Evidence() {
           value={value}
           onChange={handleChange}
           aria-label="evidence"
+          role="tablist"
           sx={{ borderRight: 2, borderColor: 'divider', textAlign: 'left' }}
           className="w-1/3 min-w-[70px]"
         >
@@ -132,6 +133,7 @@ export function Evidence() {
             <Fab
               size="small"
               href={`/manage/evidence?participantId=${participantId}`}
+              role="link"
               target="_blank"
               color="secondary"
               aria-label="add participant"
