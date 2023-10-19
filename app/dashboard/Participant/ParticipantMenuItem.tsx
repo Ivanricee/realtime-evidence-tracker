@@ -89,17 +89,18 @@ const ParticipantMenuItemComponent = ({ participant }: Props) => {
         >
           <IconButton
             size="large"
-            id="action button item"
+            id={`${participant.name}Edit`}
             aria-controls={open ? 'action-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
             className="text-emerald-100/50"
+            aria-label="participant edition"
           >
             <MoreVertIcon fontSize="inherit" />
           </IconButton>
           <Menu
-            id="menu-action"
+            id={`${participant.name}menu-action`}
             anchorEl={anchorEl}
             open={open}
             onClose={closeActions}
