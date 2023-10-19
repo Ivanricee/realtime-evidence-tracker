@@ -133,10 +133,10 @@ export default function Quiz() {
           </div>
           <div className="mt-6 flex justify-center">
             <FormControl required className="min-w-[200px] w-1/2">
-              <InputLabel id="delay">Tiempo para contestar</InputLabel>
+              <InputLabel id="delaySelect"> contestar</InputLabel>
               <Select
-                labelId="delay"
-                id="delay"
+                labelId="delaySelect"
+                id="delaySelectOpts"
                 value={delay}
                 label="Tiempo para contestar"
                 onChange={handleSelectedDelay}
