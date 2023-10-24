@@ -1,48 +1,46 @@
-# Supabase Starter
 
-This starter configures Supabase Auth to use cookies, making the user's session available throughout the entire Next.js app - Client Components, Server Components, Route Handlers, Server Actions and Middleware.
+<div align="center">
+  <h1>
+    🔍Evidence Monitoring tool 🎞️
+  </h1>
+      
+<p>It is a real-time application, which means that any changes you make will be displayed instantly, without the need to reload the page. Currently, it accepts Twitch clips videos as evidence. In the future, it will support additional file types and videos from different sources.</p>
+  
 
-## Deploy your own
+ [WEB](https://realtime-evidence-tracker.vercel.app/dashboard/evidence)
+    
+</div>
+<h2>Features:</h2>
 
-The Vercel deployment will guide you through creating a Supabase account and project. After installation of the Supabase integration, all relevant environment variables will be set up so that the project is usable immediately after deployment 🚀
+<ul>
+  <li><h4><strong>Participants:</strong></h4>
+    
+https://github.com/Ivanricee/realtime-evidence-tracker/assets/13322969/6c4855f8-cf3d-4bc2-9f7c-cb2cadf30882    
+  </li>
+  <li><h4><strong>Statistics:</strong></h4> Displays statistics for each participant, including penalties and finances. Moreover, this content can be placed in OBS, so you can show or hide the statistics of other participants and align the content as you wish. Here's the link: [Stats](link-to-stats).      
+    
+![obs_test](https://github.com/Ivanricee/realtime-evidence-tracker/assets/13322969/e7646c49-f35a-4262-bf5c-a9e844a11d95)
+  </li>
+    <li><h4><strong>Evidence Management: </strong></h4> Allows you to manage Twitch clips, which are added to a "pending" section where they can be accepted or rejected. When evidence is accepted, a "penalty" is generated. Here's the link: [Evidence Management](link-to-evidence).      
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&integration-ids=oac_jUduyjQgOyzev1fjrW83NYOv)
+https://github.com/Ivanricee/realtime-evidence-tracker/assets/13322969/c1b7db99-df0a-45b1-9592-b5dc8e8304c0
+  </li>
+    <li><h4><strong>Questions</strong></h4> You can create questions with multiple options and a defined time limit. When a question is created, it automatically appears on the participants' screen, along with a timer. Questions that are answered incorrectly or out of time are marked as penalties. Here's the link to create questions: [Quiz Dashboard](link-to-quiz-dashboard), and here's the link where participants can view and answer questions: [Quiz Management](link-to-quiz-management).     
 
-## How to use
+https://github.com/Ivanricee/realtime-evidence-tracker/assets/13322969/4fac636c-5ee0-4260-80b6-ab5cadae3a4e 
+  </li>
+    <li><h4><strong>Penalties:</strong></h4> In the URLs provided earlier for Evidence Management and Quiz Management, you can see the number of pending penalties, meaning the challenges or punishments that participants must fulfill. When a participant fulfills their penalty, you should press the "cumplir sanciones" button.      
+  </li>
+    <li><h4><strong>Finances:</strong></h4> You can keep track of bets with bits or subscriptions. This section manages debts and debtors. Only the participant who makes the bet can take this action. If a debt is not fulfilled, a new one should not be created until it's completed. Here's the link to create finances: [Finance Dashboard](link-to-finance-dashboard).
+  </li>
+    <li><h4><strong>Finance Status:</strong></h4> In the finance administration section, you can see the debts and debtors of a participant. These debts can have three statuses: "pending," "in review," and "completed." Here's the link to review and manage finances: [Finance Management](link-to-finance-management).   
+     
+https://github.com/Ivanricee/realtime-evidence-tracker/assets/13322969/f3a69d4e-0cca-4f27-a886-9e69be534d9e
+ 
+  </li>
+</ul>
 
-1. Create a [new Supabase project](https://database.new)
-1. Run `npx create-next-app -e with-supabase` to create a Next.js app using the Supabase Starter template
-1. Use `cd` to change into the app's directory
-1. Run `npm install` to install dependencies
-1. Rename `.env.local.example` to `.env.local` and update the values for `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
-1. Run `npm run dev` to start the local development server
+<h2>Responsive</h2>
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+![responsive](https://github.com/Ivanricee/realtime-evidence-tracker/assets/13322969/616079c5-4134-406f-b8e3-90a595212b45)
 
-### Create a Supabase client
-
-Check out the [`/app/_examples`](./app/_examples/) folder for an example of creating a Supabase client in:
-
-- [Client Components](./app/_examples/client-component/page.tsx)
-- [Server Components](./app/_examples/server-component/page.tsx)
-- [Route Handlers](./app/_examples/route-handler/route.ts)
-- [Server Actions](./app/_examples/server-action/page.tsx)
-
-### Create `todo` table and seed with data (optional)
-
-Navigate to [your project's SQL Editor](https://app.supabase.com/project/_/sql), click `New query`, paste the contents of the [init.sql](./supabase/migrations/20230618024722_init.sql) file and click `RUN`.
-
-This will create a basic `todos` table, enable Row Level Security (RLS), and write RLS policies enabling `select` and `insert` actions for `authenticated` users.
-
-To seed your `todos` table with some dummy data, run the contents of the [seed.sql](./supabase/seed.sql) file.
-
-## Feedback and issues
-
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
-
-## More Supabase examples
-
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
-- [Next.js Auth Helpers Docs](https://supabase.com/docs/guides/auth/auth-helpers/nextjs)
