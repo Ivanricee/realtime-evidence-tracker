@@ -22,8 +22,11 @@
   - [Finance Status](#finance-status)
 - [Responsive](#responsive)
 - [My Process](#my-process)
-  - [Built With](#build-with)
   - [What I learnt](#what-i-learnt)
+    - [Server Actions & forms](#server-actions--forms-experimental-feature)
+    - [Supabase With SWR](#supabase-with-swr)
+    - [Supabase Schema](#supabase-with-swr)
+  - [Built With](#build-with)
 - [Deployment](#deployment)
   - [Deployment Scripts](#deployment-scripts)
   - [Environment Variables](#environment-variables)
@@ -78,11 +81,84 @@ https://github.com/Ivanricee/realtime-evidence-tracker/assets/13322969/f3a69d4e-
 ![responsive](https://github.com/Ivanricee/realtime-evidence-tracker/assets/13322969/616079c5-4134-406f-b8e3-90a595212b45)
 
 ## My Process
-
 ### What I learnt
-#### server components
-#### Server Actions with forms
-#### supabase with SWR
+This was my first experience with Next.js 13 and Supabase in a project. One thing that gave me some trouble was working with action servers. On the other hand, I was pleasantly surprised that integrating SWR made my code easier to read and shorter.
+
+Of course, learning Supabase, Next.js routing, and server components was challenging, but the learning curve wasn't that tough.
+
+
+#### Server Actions & forms (experimental feature)
+The most challenging part was creating a form with a Button submission state and configuring an action server to handle a mutation in the Supabase database.
+
+First, I created a Button component using useFormStatus to track the form submission status and implement a loader. The 'pending' property becomes 'true' when the form is being submitted (during the submission action's progress). When the submission is complete, 'pending' switches to 'false'.
+
+`file: /components/Submit.tsx`
+```js
+const { pending } = useFormStatus()
+```
+
+I'm also utilizing server actions for submitting the form::
+
+```html
+.
+.
+.
+<form
+  ref={formRef}
+  action={submitAddQuiz}
+  className="w-full flex flex-col"
+>
+...
+```
+So, the action server exclusively operates on the server, making it impossible to clear the form directly. To address this, I created a file to store all the server actions in 'app/actions/' directory. This approach also helps in separating my client code from the server.
+
+Now, once the action submission is complete, I can clear my form.
+```js
+.
+.
+.
+if (status === 201) {
+  inputsRef.current?.reset()
+  formRef.current?.reset()
+}
+...
+```
+#### Supabase With SWR
+I used SWR to cache data from Supabase. Since I was frequently calling participant data, SWR provided a straightforward solution to the problem. I used the mutate function from SWR only when changes occurred in my Supabase subscription.
+
+The result: `hooks/useParticipants.tsx`
+```js
+export function useParticipants(): response {
+  const supabase = createClientComponentClient<Database>()
+  const { data: participants, error } = useSWR<Participants[]>(
+    'participants-key',
+    fetcher
+  )
+
+  useEffect(() => {
+    const channel = supabase
+      .channel('participants')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'participants',
+        },
+        (payload) => {
+          mutate('participants-key')
+        }
+      )
+      .subscribe()
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [supabase])
+  return [participants || [], !error && !participants, error]
+}
+```
+## Supabase Schema
+I created a database for this project and also implemented functions and triggers to simplify the code.
 
 ### Build With:
 
