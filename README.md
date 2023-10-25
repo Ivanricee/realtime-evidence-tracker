@@ -160,6 +160,8 @@ export function useParticipants(): response {
 ## Supabase Schema
 I created a database for this project and also implemented functions and triggers to simplify the code.
 
+![supabase_schema](https://github.com/Ivanricee/realtime-evidence-tracker/assets/13322969/2b4718af-7fef-4f5f-bd84-bf421fc28fc8)
+
 ### Build With:
 
 ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
